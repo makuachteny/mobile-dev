@@ -1,2 +1,2 @@
-# mobile-dev_group_15
+# mobile-dev
 Space for our dynamic mobile development project
