@@ -107,7 +107,7 @@ class LandingPage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/imgs/doctor_animation.png',
-            height: 200, // Adjust the height as needed
+            height: 400, // Adjust the height as needed
           ),
           const SizedBox(height: 30),
           const Text(
