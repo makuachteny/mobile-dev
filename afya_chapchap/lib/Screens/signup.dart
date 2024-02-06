@@ -34,11 +34,12 @@ class SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color.fromARGB(221, 195, 195, 194), Colors.grey],
-          ),
+          color: Colors.grey,
+          // gradient: LinearGradient(
+          //   begin: Alignment.topLeft,
+          //   end: Alignment.bottomRight,
+          //   colors: [Color.fromARGB(221, 195, 195, 194), Colors.grey],
+          // ),
         ),
         child: SafeArea(
           child: Padding(
