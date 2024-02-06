@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-
+import './landing_page.dart';
+import './signup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    return   Scaffold(
+    return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -43,7 +43,10 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                // Handle login logic here
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LandingPage()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF0E12FF),
@@ -53,7 +56,6 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 12),
             TextButton(
               onPressed: () {
-                // Handle forgot password logic here
                 _handleForgotPassword();
               },
               style: TextButton.styleFrom(
@@ -68,8 +70,10 @@ class LoginPage extends StatelessWidget {
                 Text("Don't have an account? "),
                 TextButton(
                   onPressed: () {
-                    // Handle sign-up logic here
-                    _handleSignUp();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                    );
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Color(0xFF0E12FF),
@@ -84,15 +88,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-
   void _handleForgotPassword() {
-    // Handle forgot password logic here
     debugPrint('Forgot Your Password?');
-  }
-
-
-  void _handleSignUp() {
-    // Handle sign-up logic here
-    debugPrint('SIGN UP');
   }
 }

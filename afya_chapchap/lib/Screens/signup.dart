@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import './login.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
   SignUpPageState createState() => SignUpPageState();
@@ -114,7 +115,10 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
                   },
                   child: const Text(
                     'Sign Up',
@@ -122,14 +126,25 @@ class SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text("Already have an account?"),
-                    Text(
-                      " Login",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 18),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      },
+                      child: Text(
+                        " Login",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Colors.blue[800],
+                        ),
+                      ),
                     ),
                   ],
                 ),
