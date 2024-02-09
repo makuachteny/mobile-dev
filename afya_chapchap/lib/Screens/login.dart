@@ -49,7 +49,11 @@ class LoginPage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
+<<<<<<< HEAD
                 backgroundColor: const Color(0xFF0E12FF),
+=======
+                backgroundColor: const Color.fromARGB(255, 14, 143, 255),
+>>>>>>> 6f1fb5934259c4f28e38aac9fd0b126ae33194e8
               ),
               child: const Text('LOGIN'),
             ),
@@ -59,7 +63,11 @@ class LoginPage extends StatelessWidget {
                 _handleForgotPassword();
               },
               style: TextButton.styleFrom(
+<<<<<<< HEAD
                 foregroundColor: const Color(0xFF0E12FF),
+=======
+                foregroundColor: const Color.fromARGB(255, 14, 143, 255),
+>>>>>>> 6f1fb5934259c4f28e38aac9fd0b126ae33194e8
               ),
               child: const Text('FORGOT YOUR PASSWORD?'),
             ),
@@ -67,7 +75,12 @@ class LoginPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+<<<<<<< HEAD
                 const Text("Don't have an account? "),
+=======
+                // ignore: prefer_const_constructors
+                Text("Don't have an account? "),
+>>>>>>> 6f1fb5934259c4f28e38aac9fd0b126ae33194e8
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -76,7 +89,11 @@ class LoginPage extends StatelessWidget {
                     );
                   },
                   style: TextButton.styleFrom(
+<<<<<<< HEAD
                     foregroundColor: const Color(0xFF0E12FF),
+=======
+                    foregroundColor: const Color.fromARGB(255, 14, 143, 255),
+>>>>>>> 6f1fb5934259c4f28e38aac9fd0b126ae33194e8
                   ),
                   child: const Text('SIGN UP'),
                 ),
