@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0E12FF),
+                backgroundColor: const Color.fromARGB(255, 2, 124, 255),
               ),
               child: const Text('LOGIN'),
             ),
@@ -59,7 +59,7 @@ class LoginPage extends StatelessWidget {
                 _handleForgotPassword();
               },
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF0E12FF),
+                foregroundColor: const Color.fromARGB(255, 14, 139, 255),
               ),
               child: const Text('FORGOT YOUR PASSWORD?'),
             ),
@@ -76,7 +76,7 @@ class LoginPage extends StatelessWidget {
                     );
                   },
                   style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xFF0E12FF),
+                    foregroundColor: const Color.fromARGB(255, 14, 122, 255),
                   ),
                   child: const Text('SIGN UP'),
                 ),

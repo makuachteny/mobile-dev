@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'book_appointment.dart';
 import 'message_screen.dart';
+import 'login.dart';
+
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key, Key? customKey});
 
@@ -106,12 +108,16 @@ class LandingPage extends StatelessWidget {
               title: const Text('Log Out'),
               onTap: () {
                 Navigator.pop(context);
-                // Add logic for log out
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => const LoginPage()),
+                );
               },
             ),
           ],
         ),
       ),
+
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
