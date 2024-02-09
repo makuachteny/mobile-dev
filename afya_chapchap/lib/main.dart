@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './Screens/meeting_screen.dart';
+import './Screens/signup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: MainScreen(),
+      home: SignUpPage(),
     );
   }
 }
