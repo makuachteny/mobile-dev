@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'event_history.dart';
+import 'my_appointments.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
