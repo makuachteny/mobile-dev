@@ -27,13 +27,10 @@ dependencies:
   flutter_webrtc: ^0.9.48+hotfix.1
   audioplayers: ^5.2.1
   cupertino_icons: ^1.0.2
-<<<<<<< HEAD
   flutter_lints: ^3.0.1
   zego_uikit_prebuilt_video_conference: ^2.6.9
   uuid: ^4.3.3
-=======
   image_picker: ^1.0.7
->>>>>>> 6f1fb5934259c4f28e38aac9fd0b126ae33194e8
 
 dev_dependencies:
   flutter_test:
