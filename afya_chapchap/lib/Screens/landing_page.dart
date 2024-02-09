@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'book_appointment.dart';
-
+import 'message_screen.dart';
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key, Key? customKey});
 
@@ -87,7 +87,10 @@ class LandingPage extends StatelessWidget {
               title: const Text('My Appointments'),
               onTap: () {
                 Navigator.pop(context);
-                // Add navigation logic for My Appointments
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => const MessageScreen()),
+                );
               },
             ),
             ListTile(
