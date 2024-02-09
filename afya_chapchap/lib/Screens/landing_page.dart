@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({Key? key}) : super(key: key);
+  const LandingPage({super.key, Key? customKey});
 
   @override
   Widget build(BuildContext context) {
@@ -10,22 +10,29 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Text(
-          'AfyaChapChap',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
+         title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left:  0, right: 45), // Adjust the left padding here
+              child: Text(
+                'AfyaChapChap',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
         ),
         backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              scaffoldKey.currentState?.openDrawer();
-            },
-          ),
-        ],
+        leading: IconButton(
+          // Moved IconButton to leading property
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            scaffoldKey.currentState?.openDrawer();
+          },
+        ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -107,7 +114,8 @@ class LandingPage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/imgs/doctor_animation.png',
-            height: 400, // Adjust the height as needed
+            height: 400,
+            width: 700, // Adjust the height as needed
           ),
           const SizedBox(height: 30),
           const Text(
@@ -115,21 +123,23 @@ class LandingPage extends StatelessWidget {
             style: TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () {
-              ('Appointment booked');
-              // Add navigation logic for booking appointment
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.add),
-                SizedBox(width: 8),
-                Text('Book Appointment'),
-              ],
+          SizedBox(
+            width: 200, // Set a specific width for the button
+            child: ElevatedButton(
+              onPressed: () {                // Add navigation logic for booking appointment
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16), // Adjust padding here
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add),
+                  SizedBox(width: 8),
+                  Text('Book Appointment'),
+                ],
+              ),
             ),
           ),
         ],

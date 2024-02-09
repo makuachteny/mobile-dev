@@ -3,7 +3,7 @@ import './landing_page.dart';
 import './signup.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Welcome Back!',
               style: TextStyle(
                 fontFamily: 'Merriweather',
@@ -24,61 +24,61 @@ class LoginPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
+            const Text(
               'Login to your account',
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey,
               ),
             ),
-            SizedBox(height: 24),
-            TextField(
+            const SizedBox(height: 24),
+            const TextField(
               decoration: InputDecoration(labelText: 'Email'),
             ),
-            SizedBox(height: 16),
-            TextField(
+            const SizedBox(height: 16),
+            const TextField(
               decoration: InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => LandingPage()),
+                  MaterialPageRoute(builder: (context) => const LandingPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF0E12FF),
+                backgroundColor: const Color(0xFF0E12FF),
               ),
-              child: Text('LOGIN'),
+              child: const Text('LOGIN'),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             TextButton(
               onPressed: () {
                 _handleForgotPassword();
               },
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFF0E12FF),
+                foregroundColor: const Color(0xFF0E12FF),
               ),
-              child: Text('FORGOT YOUR PASSWORD?'),
+              child: const Text('FORGOT YOUR PASSWORD?'),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account? "),
+                const Text("Don't have an account? "),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                      MaterialPageRoute(builder: (context) => const SignUpPage()),
                     );
                   },
                   style: TextButton.styleFrom(
-                    foregroundColor: Color(0xFF0E12FF),
+                    foregroundColor: const Color(0xFF0E12FF),
                   ),
-                  child: Text('SIGN UP'),
+                  child: const Text('SIGN UP'),
                 ),
               ],
             ),
