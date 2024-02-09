@@ -38,9 +38,8 @@ class NotificationService {
   }
 }
 
-void main() => runApp(MaterialApp(
+void main() => runApp(const MaterialApp(
       home: BookMeetingPage(
-        eventHistoryKey: eventHistoryKey,
       ),
     ));
 
@@ -48,9 +47,8 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 class BookMeetingPage extends StatefulWidget {
-  final GlobalKey<EventHistoryState> eventHistoryKey;
-
-  const BookMeetingPage({super.key, required this.eventHistoryKey});
+  
+  const BookMeetingPage({super.key});
 
   @override
   BookMeetingPageState createState() => BookMeetingPageState();
@@ -184,29 +182,13 @@ class BookMeetingPageState extends State<BookMeetingPage> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
-                  Event bookedEvent = Event(
-                    title: 'Full name',
-                    date: '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                    description: 'Event Description',
-                  );
-
-                  EventHistoryState? eventHistory = widget.eventHistoryKey.currentState;
-                  if (eventHistory != null) {
-                    eventHistory.addBookedEvent(bookedEvent);
-
-                    NotificationService()
-                        .showNotification(title: 'New notification', body: 'You have booked an event!');
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EventHistory(bookedEvent: bookedEvent),
-                      ),
-                    );
-                  }
-                },
-                child: const Text('Book Now'),
+                onPressed: ()  {
+                 NotificationService()
+              .showNotification(title: 'New notification', body: 'You have booked an event!');
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => const EventHistory()));
+              },
+              child: const Text('Book Now'),
               ),
             ],
           ),

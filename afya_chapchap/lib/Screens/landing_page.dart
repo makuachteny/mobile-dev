@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'book_appointment.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key, Key? customKey});
@@ -126,7 +127,8 @@ class LandingPage extends StatelessWidget {
           SizedBox(
             width: 200, // Set a specific width for the button
             child: ElevatedButton(
-              onPressed: () {                // Add navigation logic for booking appointment
+              onPressed: () {
+                context; MaterialPageRoute(builder: (context) => const BookMeetingPage());                // Add navigation logic for booking appointment
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

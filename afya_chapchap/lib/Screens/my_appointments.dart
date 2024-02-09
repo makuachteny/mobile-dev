@@ -1,46 +1,28 @@
 import 'package:flutter/material.dart';
 
-GlobalKey<EventHistoryState> eventHistoryKey = GlobalKey<EventHistoryState>();
-
-
-void main() => runApp(MaterialApp(
-      home: EventHistory(bookedEvent: Event(title: '', date: '', description: ''),
-      ),
-    ));
-    
 class EventHistory extends StatefulWidget {
-  final Event bookedEvent;
-  const EventHistory({super.key, required this.bookedEvent});
+  const EventHistory({super.key});
 
   @override
   EventHistoryState createState() => EventHistoryState();
 }
 
 class EventHistoryState extends State<EventHistory> {
-  List<Event> bookedEvents = [];
-
-  void addBookedEvent(Event event) {
-    setState(() {
-      bookedEvents.add(event);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Displaying the booked event received from the BookMeetingPage
-    addBookedEvent(widget.bookedEvent);
-  
     return Scaffold(
-      key: eventHistoryKey,
       appBar: AppBar(
-        title: const Text('Event History'),
+        title: const Text('My appointments'),
       ),
       body: ListView.builder(
-        itemCount: bookedEvents.length,
+        itemCount: eventList.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(bookedEvents[index].title),
-            subtitle: Text(bookedEvents[index].date),
+            title: Text(eventList[index].title),
+            subtitle: Text(eventList[index].date),
+            onTap: () {
+              // Handle the tap for each event
+            },
           );
         },
       ),
@@ -51,14 +33,14 @@ class EventHistoryState extends State<EventHistory> {
 class Event {
   final String title;
   final String date;
-  final String description;
 
-  Event({required this.title, required this.date, required this.description});
+  Event({required this.title, required this.date});
 }
+
 // Sample data for eventList
 List<Event> eventList = [
-  Event(title: 'Event 1', date: '2023-04-25', description: ''),
-  Event(title: 'Event 2', date: '2023-04-20', description: ''),
-  Event(title: 'Event 3', date: '2023-04-15', description: ''),
+  Event(title: 'Eye check-up', date: '2023-04-25'),
+  Event(title: 'ENT', date: '2023-04-20'),
+  Event(title: 'Beard exam', date: '2023-04-15'),
   // Add more events here if needed
 ];
