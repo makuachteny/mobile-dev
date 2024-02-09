@@ -3,14 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-<<<<<<< HEAD
   audioplayers_windows
+  file_selector_windows
   flutter_webrtc
   permission_handler_windows
   zego_express_engine
-=======
-  file_selector_windows
->>>>>>> 6f1fb5934259c4f28e38aac9fd0b126ae33194e8
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
