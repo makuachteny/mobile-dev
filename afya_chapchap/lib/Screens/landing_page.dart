@@ -147,10 +147,10 @@ class LandingPage extends StatelessWidget {
             width: 200, // Set a specific width for the button
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const BookMeetingPage()),
-                    );                // Add navigation logic for booking appointment
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => const BookMeetingPage()),
+                );               // Add navigation logic for booking appointment
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

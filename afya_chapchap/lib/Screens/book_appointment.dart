@@ -196,8 +196,10 @@ class BookMeetingPageState extends State<BookMeetingPage> {
                 onPressed: ()  {
                  NotificationService()
               .showNotification(title: 'New notification', body: 'You have booked an event!');
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => const EventHistory()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => const EventHistory()),
+                );
               },
               child: const Text(
                         " Book now",
