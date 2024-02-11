@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'book_appointment.dart';
 import 'message_screen.dart';
 import 'login.dart';
+import 'resources.dart';
 import 'profile.dart';
 
 class LandingPage extends StatelessWidget {
@@ -108,7 +109,7 @@ class LandingPage extends StatelessWidget {
                 // Add navigation logic for Resources
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => const MessageScreen()),
+                  MaterialPageRoute(builder: (BuildContext context) => const AfyaChapChapResourcePage()),
                 );
               },
             ),
