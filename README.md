@@ -13,8 +13,18 @@ Schedule and attend virtual consultations from the convenience of your mobile de
 Built-in chat functionality for secure and private communication with your healthcare providers.
 Receive timely updates, prescriptions, and follow-up instructions directly through the app.
 
-## Link to prototype:
+Getting Started:
+
+Clone the repository: git clone https://github.com/makuachteny/mobile-dev.git
+
+Navigate to the project directory:
+
+Install dependencies:
+
+Run the app:
+
+Link to prototype:
 https://elvis-kinyuas-team.adalo.com/telehealth-app
 
-## Assignment 1:
+Assignment 1:
 Hello World video sumbission https://drive.google.com/file/d/18gLF9_3fVb5bVKmrrw8fhvDNHxM-yVe4/view?usp=sharing
