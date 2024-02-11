@@ -139,7 +139,7 @@ class SignUpPageState extends State<SignUpPage> {
                         );
                       },
                       child: Text(
-                        " Login",
+                        " LOG IN",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
