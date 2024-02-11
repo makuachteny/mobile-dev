@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 void main() {
   runApp(MaterialApp(
     theme: ThemeData(
-      primaryColor: const Color.fromARGB(255, 46, 146, 246),
+      primaryColor: Colors.blue,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: const Color(0xFF0EA9FF),
       ).copyWith(
@@ -49,7 +49,7 @@ class ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -70,7 +70,7 @@ class ProfilePageState extends State<ProfilePage> {
                       ),
                       child: CircleAvatar(
                         radius: 30,
-                        backgroundColor: _image != null ? Colors.transparent : Theme.of(context).colorScheme.background,
+                        backgroundColor: _image != null ? Colors.blue : null,
                         backgroundImage: _image != null ? FileImage(_image!) : null,
                       ),
                     ),
@@ -90,7 +90,7 @@ class ProfilePageState extends State<ProfilePage> {
               'Update Profile Details',
               style: TextStyle(
                 fontSize: 20,
-                color: Theme.of(context).primaryColor,
+                color: Colors.blue[900],
                 fontWeight: FontWeight.bold,
               ),
             ),

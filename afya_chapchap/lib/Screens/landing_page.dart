@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'book_appointment.dart';
 import 'message_screen.dart';
 import 'login.dart';
+import 'profile.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key, Key? customKey});
@@ -82,6 +83,10 @@ class LandingPage extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 // Add navigation logic for My Profile
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => const ProfilePage()),
+                );
               },
             ),
             ListTile(
@@ -101,6 +106,10 @@ class LandingPage extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 // Add navigation logic for Resources
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => const MessageScreen()),
+                );
               },
             ),
             ListTile(
