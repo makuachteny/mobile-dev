@@ -96,7 +96,7 @@ class BookMeetingPageState extends State<BookMeetingPage> {
       ),
       body: Container(
         decoration: const BoxDecoration(
-          color: Colors.grey,
+          color: Colors.white,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -108,12 +108,12 @@ class BookMeetingPageState extends State<BookMeetingPage> {
                 decoration: InputDecoration(
                   labelText: 'Full name',
                   fillColor: Color(0xffD8D8DD),
-                  labelStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Colors.black),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
               ),
@@ -122,12 +122,12 @@ class BookMeetingPageState extends State<BookMeetingPage> {
                 decoration: InputDecoration(
                   labelText: 'Description',
                   fillColor: Color(0xffD8D8DD),
-                  labelStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Colors.black),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
               ),
@@ -135,7 +135,7 @@ class BookMeetingPageState extends State<BookMeetingPage> {
               const SizedBox(height: 16.0),
               const Text(
                 'Date and Time',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.black),
               ),
               Row(
                 children: [
@@ -182,13 +182,31 @@ class BookMeetingPageState extends State<BookMeetingPage> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue[800],
+                    elevation: 5.0,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  
                 onPressed: ()  {
                  NotificationService()
               .showNotification(title: 'New notification', body: 'You have booked an event!');
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (context) => const EventHistory()));
               },
-              child: const Text('Book Now'),
+              child: const Text(
+                        " Book now",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
               ),
             ],
           ),
