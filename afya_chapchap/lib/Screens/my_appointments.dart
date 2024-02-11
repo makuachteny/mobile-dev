@@ -12,7 +12,11 @@ class EventHistoryState extends State<EventHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My appointments'),
+        title: const Text(
+          'My Appointments',
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.blue[900],
       ),
       body: ListView.builder(
         itemCount: eventList.length,

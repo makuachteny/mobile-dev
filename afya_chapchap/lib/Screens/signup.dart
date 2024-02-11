@@ -34,7 +34,7 @@ class SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          color: Colors.grey,
+          color: Colors.white,
           // gradient: LinearGradient(
           //   begin: Alignment.topLeft,
           //   end: Alignment.bottomRight,
@@ -64,12 +64,12 @@ class SignUpPageState extends State<SignUpPage> {
                   decoration: const InputDecoration(
                     labelText: 'Fullname',
                     fillColor: Color(0xffD8D8DD),
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(color: Colors.black),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                   ),
                 ),
@@ -77,12 +77,12 @@ class SignUpPageState extends State<SignUpPage> {
                   controller: _emailController,
                   decoration: const InputDecoration(
                     labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(color: Colors.black),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                   ),
                 ),
@@ -94,12 +94,12 @@ class SignUpPageState extends State<SignUpPage> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(color: Colors.black),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                     enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                   ),
                 ),

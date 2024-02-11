@@ -28,7 +28,8 @@ class LoginPage extends StatelessWidget {
               'Login to your account',
               style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.grey,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 24),
@@ -49,9 +50,16 @@ class LoginPage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 2, 124, 255),
+                backgroundColor: Colors.blue[800],
               ),
-              child: const Text('LOGIN'),
+              child: const Text(
+                      " Login",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
             const SizedBox(height: 12),
             TextButton(
