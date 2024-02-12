@@ -53,7 +53,7 @@ class LoginPage extends StatelessWidget {
                 backgroundColor: Colors.blue[800],
               ),
               child: const Text(
-                      " Login",
+                      " LOGIN",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -86,7 +86,7 @@ class LoginPage extends StatelessWidget {
                   style: TextButton.styleFrom(
                     foregroundColor: const Color.fromARGB(255, 14, 122, 255),
                   ),
-                  child: const Text('SIGN UP'),
+                  child: const Text('SIGN-UP'),
                 ),
               ],
             ),
