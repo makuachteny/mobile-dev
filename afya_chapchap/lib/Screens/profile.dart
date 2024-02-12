@@ -119,7 +119,7 @@ class ProfilePageState extends State<ProfilePage> {
             TextField(
               controller: _medicalConditionsController,
               decoration: const InputDecoration(
-                hintText: 'Existing Medical Conditions',
+                hintText: 'Your Existing Medical Conditions',
               ),
             ),
             const SizedBox(height: 20),
@@ -133,7 +133,7 @@ class ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Implement profile update logic
+                // 
               },
               child: const Text('Update Profile'),
             ),
