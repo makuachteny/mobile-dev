@@ -85,13 +85,18 @@ class ResourceCard extends StatelessWidget {
   final String description;
 
   const ResourceCard({super.key, required this.title, required this.description});
+  
+  bool get kDebugMode => null;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         // Add functionality here to handle card click
-        print('Clicked on: $title');
+        if (kDebugMode) {
+          // ignore: avoid_print
+          print('Clicked on: $title');
+        }
       },
       child: Card(
         elevation: 3.0,
