@@ -86,7 +86,7 @@ class ResourceCard extends StatelessWidget {
 
   const ResourceCard({super.key, required this.title, required this.description});
   
-  bool get kDebugMode => null;
+  bool get kDebugMode => true;
 
   @override
   Widget build(BuildContext context) {
