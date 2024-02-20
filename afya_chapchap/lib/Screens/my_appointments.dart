@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'meeting_screen.dart';
 
 class EventHistory extends StatefulWidget {
   const EventHistory({super.key});
@@ -26,6 +27,9 @@ class EventHistoryState extends State<EventHistory> {
             subtitle: Text(eventList[index].date),
             onTap: () {
               // Handle the tap for each event
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) => const MainScreen()));
             },
           );
         },
