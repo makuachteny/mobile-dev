@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'book_appointment.dart';
 import 'message_screen.dart';
@@ -6,7 +7,7 @@ import 'resources.dart';
 import 'profile.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({super.key, Key? customKey});
+  const LandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +16,11 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-         title: const Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.only(left:  0, right: 45), // Adjust the left padding here
+              padding: EdgeInsets.only(left: 0, right: 45),
               child: Text(
                 'AfyaChapChap',
                 style: TextStyle(
@@ -32,7 +33,6 @@ class LandingPage extends StatelessWidget {
         ),
         backgroundColor: Colors.blue,
         leading: IconButton(
-          // Moved IconButton to leading property
           icon: const Icon(Icons.menu),
           onPressed: () {
             scaffoldKey.currentState?.openDrawer();
@@ -83,10 +83,10 @@ class LandingPage extends StatelessWidget {
               title: const Text('My Profile'),
               onTap: () {
                 Navigator.pop(context);
-                // Add navigation logic for My Profile
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => const ProfilePage()),
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const ProfilePage()),
                 );
               },
             ),
@@ -97,7 +97,8 @@ class LandingPage extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => const MessageScreen()),
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const MessageScreen()),
                 );
               },
             ),
@@ -106,36 +107,38 @@ class LandingPage extends StatelessWidget {
               title: const Text('Resources'),
               onTap: () {
                 Navigator.pop(context);
-                // Add navigation logic for Resources
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => const AfyaChapChapResourcePage()),
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          const AfyaChapChapResourcePage()),
                 );
               },
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Log Out'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => const LoginPage()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+              onTap: () async {
+                    await FirebaseAuth.instance.signOut();
+                    // ignore:   use_build_context_synchronously
+                    Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+                },
 
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+              )
+             ],
+          ),
+        ),
+          body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
           Image.asset(
             'assets/imgs/doctor_animation.png',
             height: 400,
-            width: 700, // Adjust the height as needed
+            width: 700,
           ),
           const SizedBox(height: 30),
           const Text(
@@ -144,17 +147,20 @@ class LandingPage extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           SizedBox(
-            width: 200, // Set a specific width for the button
+            width: 200,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => const BookMeetingPage()),
-                );               // Add navigation logic for booking appointment
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          const BookMeetingPage()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 16), // Adjust padding here
+                  horizontal: 16,
+                ),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,7 @@
+import 'package:afya_chapchap/Screens/landing_page.dart';
 import 'package:flutter/material.dart';
-import './login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:afya_chapchap/Screens/login.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -29,17 +31,35 @@ class SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
+  Future<void> _signUp() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      // Handle successful registration, e.g., navigate to the home page.
+      // Replace the next line with your desired navigation logic.
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LandingPage()),
+      );
+    } catch (e) {
+      // Handle registration failure (e.g., display an error message).
+      print('Error during registration: $e');
+      // You can also show a user-friendly error message to the user.
+      // For example: ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Registration failed. Please try again.')),
+      // );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          // gradient: LinearGradient(
-          //   begin: Alignment.topLeft,
-          //   end: Alignment.bottomRight,
-          //   colors: [Color.fromARGB(221, 195, 195, 194), Colors.grey],
-          // ),
         ),
         child: SafeArea(
           child: Padding(
@@ -55,7 +75,7 @@ class SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 Text(
-                  "Say goodbye to geographical barrier and schedule your online appointment today!",
+                  "Say goodbye to geographical barriers and schedule your online appointment today!",
                   style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                 ),
                 const SizedBox(height: 20.0),
@@ -106,8 +126,8 @@ class SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
                     backgroundColor: Colors.blue[800],
+                    foregroundColor: Colors.white,
                     elevation: 5.0,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50, vertical: 15),
@@ -115,12 +135,7 @@ class SignUpPageState extends State<SignUpPage> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
-                    );
-                  },
+                  onPressed: _signUp,
                   child: const Text(
                     'Sign Up',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
@@ -133,9 +148,10 @@ class SignUpPageState extends State<SignUpPage> {
                     const Text("Already have an account?"),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                         );
                       },
                       child: Text(
