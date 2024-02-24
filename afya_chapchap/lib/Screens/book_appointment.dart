@@ -47,7 +47,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 class BookMeetingPage extends StatefulWidget {
-  
   const BookMeetingPage({super.key});
 
   @override
