@@ -46,6 +46,7 @@ class SignUpPageState extends State<SignUpPage> {
       );
     } catch (e) {
       // Handle registration failure (e.g., display an error message).
+      // ignore: avoid_print
       print('Error during registration: $e');
       // You can also show a user-friendly error message to the user.
       // For example: ScaffoldMessenger.of(context).showSnackBar(
