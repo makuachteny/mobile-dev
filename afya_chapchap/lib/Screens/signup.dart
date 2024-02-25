@@ -41,6 +41,7 @@ class SignUpPageState extends State<SignUpPage> {
       // Replace the next line with your desired navigation logic.
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const LandingPage()),
       );

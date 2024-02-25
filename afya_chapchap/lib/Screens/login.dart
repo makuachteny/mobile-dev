@@ -138,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
         // After successful login, navigate to the landing page.
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const LandingPage()),
         );

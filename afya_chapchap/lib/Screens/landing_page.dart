@@ -122,6 +122,7 @@ class LandingPage extends StatelessWidget {
                     await FirebaseAuth.instance.signOut();
                     // ignore:   use_build_context_synchronously
                     Navigator.pushReplacement(
+                    // ignore: use_build_context_synchronously
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );

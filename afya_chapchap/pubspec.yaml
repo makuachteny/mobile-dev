@@ -25,6 +25,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  logger: 2.0.2+1
+
   url_launcher: ^6.1.10
   flutter_local_notifications: ^16.3.2
   flutter_webrtc: ^0.9.48+hotfix.1
