@@ -53,6 +53,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                 Map<String, dynamic> data =
                     document.data() as Map<String, dynamic>;
                 String name = data['name'];
+                String description = data['description'];
                 String date = data['date'];
                 String time = data['time'];
 
