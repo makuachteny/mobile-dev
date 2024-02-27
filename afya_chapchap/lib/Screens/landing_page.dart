@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'appointment.dart';
@@ -16,20 +18,12 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 0, right: 45),
-              child: Text(
-                'AfyaChapChap',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ],
+        title: const Text(
+          'AfyaChapChap',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
         ),
         backgroundColor: Colors.blue,
         leading: IconButton(
@@ -40,26 +34,24 @@ class LandingPage extends StatelessWidget {
         ),
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.white,
-                    // Replace with your profile picture
-                    backgroundImage: AssetImage('assets/imgs/profile_pic.png'),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
+              child: Center(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.white,
+                      // Replace with your profile picture
+                      backgroundImage:
+                          AssetImage('assets/imgs/profile_pic.png'),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
                       'Your Name',
                       style: TextStyle(
                         color: Colors.white,
@@ -67,75 +59,84 @@ class LandingPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+            Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text('Home'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text('Profile'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const ProfilePage()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.calendar_today),
+                  title: const Text('Appointments'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const MessageScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.library_books),
+                  title: const Text('Resources'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const AfyaChapChapResourcePage()),
+                    );
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('My Profile'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const ProfilePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.calendar_today),
-              title: const Text('My Appointments'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const MessageScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.library_books),
-              title: const Text('Resources'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          const AfyaChapChapResourcePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text('Log Out'),
-              onTap: () async {
-                    await FirebaseAuth.instance.signOut();
-                    // ignore:   use_build_context_synchronously
-                    Navigator.pushReplacement(
-                    // ignore: use_build_context_synchronously
+            const Spacer(), // Added Spacer to push the "Log Out" button to the bottom
+            Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 16.0), // Added bottom padding for "Log Out" button
+              child: ListTile(
+                // Added ListTile for "Log Out" functionality
+                leading: const Icon(Icons.exit_to_app),
+                title: const Text('Log Out'),
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
-
-              )
-             ],
-          ),
+              ),
+            ),
+          ],
         ),
-          body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
           Image.asset(
             'assets/imgs/doctor_animation.png',
             height: 400,

@@ -1,17 +1,20 @@
-import 'dart:io' show File;
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:afya_chapchap/Services/profilecollection.dart';
 
 void main() {
   runApp(MaterialApp(
     theme: ThemeData(
       primaryColor: Colors.blue,
-      colorScheme: ColorScheme.fromSwatch().copyWith(
-        secondary: const Color(0xFF0EA9FF),
-      ).copyWith(
-        background: const Color(0xFFE0E0E0),
-      ),
+      colorScheme: ColorScheme.fromSwatch()
+          .copyWith(
+            secondary: const Color(0xFF0EA9FF),
+          )
+          .copyWith(
+            background: const Color(0xFFE0E0E0),
+          ),
     ),
     home: const ProfilePage(),
   ));
@@ -21,10 +24,11 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  ProfilePageState createState() => ProfilePageState();
+  // ignore: library_private_types_in_public_api
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
@@ -32,16 +36,53 @@ class ProfilePageState extends State<ProfilePage> {
   final TextEditingController _medicalConditionsController =
       TextEditingController();
   File? _image;
+  final ProfileCollection _profileCollection = ProfileCollection();
 
-  Future<void> getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> getImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
 
-    setState(() {
-      if (pickedFile != null) {
+    if (pickedFile != null) {
+      setState(() {
         _image = File(pickedFile.path);
-      }
-    });
+      });
+    }
+  }
+
+  Future<void> _updateProfile() async {
+    try {
+      String fullName = _fullNameController.text;
+      int age = int.tryParse(_ageController.text) ?? 0;
+      String location = _locationController.text;
+      String medicalConditions = _medicalConditionsController.text;
+      String password = _passwordController.text;
+      // Remove the unused variable
+      _image != null ? _image!.path : '';
+
+      String userId = 'user123';
+
+      String imageUrl = await _profileCollection.uploadImage(userId, _image!);
+
+      await _profileCollection.updateProfile(
+        userId,
+        fullName,
+        age,
+        location,
+        medicalConditions,
+        password,
+        imageUrl, // Use imageUrl obtained from uploadImage method
+      );
+
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully')),
+      );
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to update profile')),
+      );
+      print('Error updating profile: $e');
+    }
   }
 
   @override
@@ -56,36 +97,73 @@ class ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: getImage,
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SafeArea(
+                      child: Wrap(
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.photo_library),
+                            title: const Text('Photo Library'),
+                            onTap: () {
+                              getImage(ImageSource.gallery);
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.photo_camera),
+                            title: const Text('Camera'),
+                            onTap: () {
+                              getImage(ImageSource.camera);
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: _image != null ? Colors.blue : null,
-                        backgroundImage: _image != null ? FileImage(_image!) : null,
+                    );
+                  },
+                );
+              },
+              child: Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.secondary,
+                        width: 2,
                       ),
                     ),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage:
+                          _image != null ? FileImage(_image!) : null,
+                    ),
                   ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Full Name',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.bold,
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.blue,
+                      ),
+                      padding: const EdgeInsets.all(5),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 10),
             Text(
               'Update Profile Details',
               style: TextStyle(
@@ -132,9 +210,7 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // 
-              },
+              onPressed: _updateProfile,
               child: const Text('Update Profile'),
             ),
           ],

@@ -128,9 +128,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _handleLogin(BuildContext context) async {
     try {
+      // Creates the user with email and password
+
       _userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
+        
       );
 
       if (_userCredential != null) {
