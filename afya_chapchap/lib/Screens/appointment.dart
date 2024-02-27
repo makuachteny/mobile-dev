@@ -59,7 +59,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
 
                 return ListTile(
                   title: Text(name),
-                  subtitle: Text('$date at $time'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('$date at $time'),
+                      Text(description),
+                    ],
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -173,7 +179,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
               timeController.clear();
               Navigator.pop(context);
             },
-            child: Text('Add'),
+            child: const Text('Add'),
           )
         ],
       ),
