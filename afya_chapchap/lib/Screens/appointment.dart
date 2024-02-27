@@ -173,7 +173,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
               timeController.clear();
               Navigator.pop(context);
             },
-            child: const Text('Add'),
+            child: Text('Add'),
           )
         ],
       ),
