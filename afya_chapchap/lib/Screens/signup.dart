@@ -181,7 +181,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       // Handle sign-up errors here
                       print('Error signing up with Google: $e');
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Failed to sign up with Google.'),
                         ),
                       );
