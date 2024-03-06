@@ -11,6 +11,7 @@ class FirestoreService {
     String description,
     String date,
     String time,
+    String userUID,
   ) {
     return appointments.add({
       'name': name,
@@ -18,6 +19,7 @@ class FirestoreService {
       'date': date,
       'time': time,
       'timestamp': Timestamp.now(),
+      'uid': userUID,
     });
   }
 
@@ -36,6 +38,7 @@ class FirestoreService {
     String description,
     String date,
     String time,
+  
   ) {
     return appointments.doc(docID).update({
       'name': name,
@@ -43,6 +46,7 @@ class FirestoreService {
       'date': date,
       'time': time,
       'timestamp': Timestamp.now(),
+  
     });
   }
 
