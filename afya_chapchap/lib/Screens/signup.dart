@@ -1,27 +1,23 @@
-import 'package:afya_chapchap/Screens/landing_page.dart';
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:afya_chapchap/Screens/landing_page.dart';
 import 'package:afya_chapchap/Screens/login.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import '../firebase_auth_implementation/google_auth_services.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  SignUpPageState createState() => SignUpPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class SignUpPageState extends State<SignUpPage> {
-  late final TextEditingController _fullnameController;
-  late final TextEditingController _emailController;
-  late final TextEditingController _passwordController;
-
-  @override
-  void initState() {
-    _fullnameController = TextEditingController();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    super.initState();
-  }
+class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -33,26 +29,25 @@ class SignUpPageState extends State<SignUpPage> {
 
   Future<void> _signUp() async {
     try {
+      // Perform user registration with email and password
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
+
       // Handle successful registration, e.g., navigate to the home page.
-      // Replace the next line with your desired navigation logic.
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const LandingPage()),
       );
     } catch (e) {
       // Handle registration failure (e.g., display an error message).
-      // ignore: avoid_print
       print('Error during registration: $e');
-      // You can also show a user-friendly error message to the user.
-      // For example: ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('Registration failed. Please try again.')),
-      // );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Registration failed. Please try again.'),
+        ),
+      );
     }
   }
 
@@ -166,6 +161,32 @@ class SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 20.0),
+                // Google Sign In Button
+                SignInButton(
+                  Buttons.Google,
+                  onPressed: () async {
+                    try {
+                      // Perform Google Sign-Up
+                      await AuthService().signInWithGoogle();
+                      // Navigate to the landing page after successful sign-up
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LandingPage(),
+                        ),
+                      );
+                    } catch (e) {
+                      // Handle sign-up errors here
+                      print('Error signing up with Google: $e');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to sign up with Google.'),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
