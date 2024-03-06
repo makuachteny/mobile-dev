@@ -1,10 +1,14 @@
+import 'package:afya_chapchap/firebase_auth_implementation/google_auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../firebase_auth_implementation/google_auth_services.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import './landing_page.dart';
 import './signup.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, Key? customkey});
+  const LoginPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -14,7 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
-  UserCredential? _userCredential; // Variable to store the UserCredential
+  UserCredential? _userCredential;
 
   @override
   void initState() {
@@ -120,6 +124,31 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+            // Google Sign In button
+SignInButton(
+  Buttons.Google,
+  onPressed: () async {
+    try {
+      await AuthService().signInWithGoogle();
+      // Navigate to the next screen after successful sign-in
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LandingPage()),
+      );
+    } catch (e) {
+      // Handle sign-in errors here
+      print('Error signing in with Google: $e');
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to sign in with Google.'),
+            ),
+          );
+  }
+},
+),
           ],
         ),
       ),
@@ -128,30 +157,36 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _handleLogin(BuildContext context) async {
     try {
-      // Creates the user with email and password
-
       _userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
-        
       );
 
-      if (_userCredential != null) {
-        // Check if _userCredential is not null
-        // After successful login, navigate to the landing page.
+      if (_userCredential != null && _userCredential!.user != null) {
+        // Ensure Firestore initialization
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+        // Create users collection if it doesn't exist
+        await firestore
+            .collection('users')
+            .doc(_userCredential!.user!.uid)
+            .set({
+          'email': _emailController.text.trim(),
+          'uid': _userCredential!.user!.uid,
+        });
+
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const LandingPage()),
         );
       }
     } catch (e) {
-      // Handle login failure (e.g., display an error message).
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Login failed. Please check your credentials.')),
+          content: Text('Login failed. Please check your credentials.'),
+        ),
       );
     }
   }
