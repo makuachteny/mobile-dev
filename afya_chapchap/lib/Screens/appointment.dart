@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:afya_chapchap/services/firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentPage extends StatefulWidget {
@@ -158,11 +159,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
           ElevatedButton(
             onPressed: () {
               if (docID == null) {
+                String userUID = FirebaseAuth.instance.currentUser?.uid ?? '';
                 firestoreService.addAppointment(
                   nameController.text,
                   descriptionController.text,
                   dateController.text,
                   timeController.text,
+                  userUID,
                 );
               } else {
                 firestoreService.updateAppointment(
@@ -171,6 +174,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                   descriptionController.text,
                   dateController.text,
                   timeController.text,
+                  
                 );
               }
               nameController.clear();
