@@ -42,7 +42,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
         
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: firestoreService.getAppointmentsStream(),
+        stream: firestoreService.getUserAppointmentsStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List appointmentsList = snapshot.data!.docs;
