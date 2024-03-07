@@ -2,7 +2,6 @@ import 'package:afya_chapchap/firebase_auth_implementation/google_auth_services.
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../firebase_auth_implementation/google_auth_services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import './landing_page.dart';
 import './signup.dart';
