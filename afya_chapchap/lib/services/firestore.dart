@@ -33,6 +33,17 @@ class FirestoreService {
   // }
   Stream<QuerySnapshot> getUserAppointmentsStream() {
     String userUID = FirebaseAuth.instance.currentUser?.uid ?? '';
+    
+  //   print('Fetching appointments for user: $userUID');
+  //   final query = appointments
+  //     .where('uid', isEqualTo: userUID)
+  //     .orderBy('timestamp', descending: true);
+  //   print('Query: $query');
+  //   return query.snapshots().handleError((error) {
+  //     print('Error fetching appointments: $error');
+  //     return null;
+  // });
+
     return appointments
         .where('uid', isEqualTo: userUID)
         .orderBy('timestamp', descending: true)
