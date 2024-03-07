@@ -31,7 +31,7 @@ class FirestoreService {
 
   //   return appointmentsStream;
   // }
-  Stream<QuerySnapshot> getAppointmentsStream() {
+  Stream<QuerySnapshot> getUserAppointmentsStream() {
     String userUID = FirebaseAuth.instance.currentUser?.uid ?? '';
     return appointments
         .where('uid', isEqualTo: userUID)
