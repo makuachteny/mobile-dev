@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
     // get collection of appointments
@@ -24,13 +25,19 @@ class FirestoreService {
   }
 
  //READ: get appointments from the database
+  // Stream<QuerySnapshot> getAppointmentsStream() {
+  //   final appointmentsStream =
+  //       appointments.orderBy('timestamp', descending: true).snapshots();
+
+  //   return appointmentsStream;
+  // }
   Stream<QuerySnapshot> getAppointmentsStream() {
-    final appointmentsStream =
-        appointments.orderBy('timestamp', descending: true).snapshots();
-
-    return appointmentsStream;
-  }
-
+    String userUID = FirebaseAuth.instance.currentUser?.uid ?? '';
+    return appointments
+        .where('uid', isEqualTo: userUID)
+        .orderBy('timestamp', descending: true)
+        .snapshots();
+    }
   //UPDATE: update appointments given a doc id
   Future<void> updateAppointment(
     String docID,
