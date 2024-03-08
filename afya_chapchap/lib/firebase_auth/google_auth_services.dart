@@ -18,7 +18,7 @@ class AuthService {
           idToken: googleAuth.idToken,
         );
 
-        return await FirebaseAuth.instance.signInWithCredential(credential);
+        await FirebaseAuth.instance.signInWithCredential(credential);
       } else {
         // Handle sign-in cancellation
         print('Google sign-in canceled.');

@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:afya_chapchap/Screens/landing_page.dart';
 import 'package:afya_chapchap/Screens/login.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import '../firebase_auth_implementation/google_auth_services.dart';
+import '../firebase_auth/google_auth_services.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
