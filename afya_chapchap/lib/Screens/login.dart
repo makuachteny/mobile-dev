@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:afya_chapchap/firebase_auth_implementation/google_auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -131,15 +133,14 @@ SignInButton(
     try {
       await AuthService().signInWithGoogle();
       // Navigate to the next screen after successful sign-in
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LandingPage()),
       );
     } catch (e) {
       // Handle sign-in errors here
+      // ignore: avoid_print
       print('Error signing in with Google: $e');
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Failed to sign in with Google.'),
@@ -174,14 +175,12 @@ SignInButton(
           'uid': _userCredential!.user!.uid,
         });
 
-        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LandingPage()),
         );
       }
     } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Login failed. Please check your credentials.'),
