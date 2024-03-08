@@ -10,13 +10,8 @@ class ProfileCollection {
       FirebaseStorage.instance.ref().child('profiles');
   final FirebaseAuthServices _firebaseAuthService = FirebaseAuthServices();
 
-  Future<String?> getCurrentUser() async {
-    return await _firebaseAuthService.getCurrentUserId();
-  }
-
   Future<String?> getCurrentUserId() async {
-    final FirebaseUser? user = (await getCurrentUser()) as FirebaseUser?;
-    return user?.uid;
+    return await _firebaseAuthService.getCurrentUserId();
   }
 
   Future<String> uploadImage(File imageFile) async {
@@ -24,8 +19,8 @@ class ProfileCollection {
       throw ArgumentError('Image file cannot be null or empty.');
     }
 
-    String userId = await getCurrentUserId() ?? '';
-    if (userId.isEmpty) {
+    String? userId = await getCurrentUserId();
+    if (userId == null || userId.isEmpty) {
       throw Exception('Failed to retrieve current user ID');
     }
 
@@ -78,8 +73,4 @@ class ProfileCollection {
       await profileDoc.set(profileData);
     }
   }
-}
-
-class FirebaseUser {
-  Null get uid => null;
 }

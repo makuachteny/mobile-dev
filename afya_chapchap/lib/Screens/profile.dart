@@ -34,50 +34,50 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _updateProfile() async {
-    try {
-      String fullName = _fullNameController.text;
-      int age = int.tryParse(_ageController.text) ?? 0;
-      String location = _locationController.text;
-      String medicalConditions = _medicalConditionsController.text;
-      String password = _passwordController.text;
+  try {
+    String fullName = _fullNameController.text;
+    int age = int.tryParse(_ageController.text) ?? 0;
+    String location = _locationController.text;
+    String medicalConditions = _medicalConditionsController.text;
+    String password = _passwordController.text;
 
-      String imageUrl = '';
-      if (_image != null) {
-        imageUrl = await _profileCollection.uploadImage(_image!);
-      }
-
-      String? userId = await _profileCollection.getCurrentUserId();
-      if (userId == null) {
-        throw Exception('Current user ID is null');
-      }
-
-      await _profileCollection.updateProfile(
-        fullName: fullName,
-        age: age,
-        location: location,
-        medicalConditions: medicalConditions,
-        password: password,
-        imageUrl: imageUrl,
-        userId: userId,
-        updatedFullName: fullName,
-        updatedAge: age,
-        updatedLocation: location,
-        updatedMedicalConditions: medicalConditions,
-        updatedPassword: password,
-        updatedImageUrl: imageUrl,
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to update profile')),
-      );
-      // ignore: avoid_print
-      print('Error updating profile: $e');
+    String imageUrl = '';
+    if (_image != null) {
+      imageUrl = await _profileCollection.uploadImage(_image!);
     }
+
+    String? userId = await _profileCollection.getCurrentUserId();
+    if (userId == null) {
+      throw Exception('Current user ID is null');
+    }
+
+    await _profileCollection.updateProfile(
+      fullName: fullName,
+      age: age,
+      location: location,
+      medicalConditions: medicalConditions,
+      password: password,
+      imageUrl: imageUrl,
+      userId: userId,
+      updatedFullName: fullName,
+      updatedAge: age,
+      updatedLocation: location,
+      updatedMedicalConditions: medicalConditions,
+      updatedPassword: password,
+      updatedImageUrl: imageUrl,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile updated successfully')),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to update profile')),
+    );
+    // ignore: avoid_print
+    print('Error updating profile: $e');
   }
+}
 
   @override
   Widget build(BuildContext context) {

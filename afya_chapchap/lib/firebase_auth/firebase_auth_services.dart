@@ -5,28 +5,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirebaseAuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<User?> signUpWithEmailAndPassword(String email, String password) async {
+  Future<String> signUpWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      return credential.user;
+      return credential.user!.uid; // Use ! to assert non-null user
     } catch (e) {
-      ("There was an error signing up");
-      return null;
+      print("There was an error signing up");
+      rethrow; // Rethrow the error for better handling
     }
   }
 
-  Future<User?> signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return credential.user;
+      return credential.user!.uid; // Use ! to assert non-null user
     } catch (e) {
       print("There was an error signing in");
-      return null;
+      rethrow; // Rethrow the error for better handling
     }
   }
 
-  Future<String?> getCurrentUserId() async {
-    final User? user = _auth.currentUser;
-    return user?.uid; // Return the user ID if the user is authenticated, otherwise return null
+  Future<String> getCurrentUserId() async {
+    final User user = _auth.currentUser!; // Use ! to assert non-null user
+    return user.uid;
   }
 }
