@@ -1,87 +1,85 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import '../firebase_auth_implementation/firebase_auth_services.dart';
 
 class ProfileCollection {
   final CollectionReference _profiles =
       FirebaseFirestore.instance.collection('profiles');
+  final Reference _profilesStorage =
+      FirebaseStorage.instance.ref().child('profiles');
+  final FirebaseAuthServices _firebaseAuthService = FirebaseAuthServices();
 
-  Future<String> uploadImage(String userId, File imageFile) async {
-    try {
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('profiles')
-          .child(userId)
-          .child('profile_image.jpg');
-      await ref.putFile(imageFile);
-      final url = await ref.getDownloadURL();
-      return url;
-    } catch (e) {
-      print('Error uploading image: $e');
-      return ''; // or throw an exception here based on your error handling strategy
+  Future<String?> getCurrentUser() async {
+    return await _firebaseAuthService.getCurrentUserId();
+  }
+
+  Future<String?> getCurrentUserId() async {
+    final FirebaseUser? user = (await getCurrentUser()) as FirebaseUser?;
+    return user?.uid;
+  }
+
+  Future<String> uploadImage(File imageFile) async {
+    if (imageFile.path.isEmpty) {
+      throw ArgumentError('Image file cannot be null or empty.');
+    }
+
+    String userId = await getCurrentUserId() ?? '';
+    if (userId.isEmpty) {
+      throw Exception('Failed to retrieve current user ID');
+    }
+
+    final ref = _profilesStorage.child(userId).child('profile_image.jpg');
+    await ref.putFile(imageFile);
+    final url = await ref.getDownloadURL();
+    return url;
+  }
+
+  Future<void> updateProfile({
+    required String fullName,
+    required int age,
+    required String location,
+    required String medicalConditions,
+    required String password,
+    required String imageUrl,
+    required String userId,
+    required String updatedFullName,
+    required int updatedAge,
+    required String updatedLocation,
+    required String updatedMedicalConditions,
+    required String updatedPassword,
+    required String updatedImageUrl,
+  }) async {
+    if (updatedAge < 0) {
+      throw ArgumentError('Age must be a non-negative integer.');
+    }
+
+    if (updatedMedicalConditions.contains('sensitive_information')) {
+      throw ArgumentError(
+          'Medical conditions should not contain sensitive information.');
+    }
+
+    final profileData = {
+      'fullName': updatedFullName,
+      'age': updatedAge,
+      'location': updatedLocation,
+      'medicalConditions': updatedMedicalConditions,
+      'password': updatedPassword,
+      'imageUrl': updatedImageUrl,
+      'timestamp': Timestamp.now(),
+    };
+
+    final profileDoc = _profiles.doc(userId);
+    final docSnapshot = await profileDoc.get();
+
+    if (docSnapshot.exists) {
+      await profileDoc.update(profileData);
+    } else {
+      await profileDoc.set(profileData);
     }
   }
+}
 
-  Future<void> createProfile(
-    String userId,
-    String fullName,
-    int age,
-    String location,
-    String medicalConditions,
-    String password,
-    String imagePath,
-  ) async {
-    try {
-      await _profiles.doc(userId).set({
-        'fullName': fullName,
-        'age': age,
-        'location': location,
-        'medicalConditions': medicalConditions,
-        'password': password,
-        'imagePath': imagePath,
-        'timestamp': Timestamp.now(),
-      });
-    } catch (e) {
-      print('Error creating profile: $e');
-      // Throw an error or handle it in your UI as needed
-    }
-  }
-
-  Stream<DocumentSnapshot> getProfileStream(String userId) {
-    return _profiles.doc(userId).snapshots();
-  }
-
-  Future<void> updateProfile(
-    String userId,
-    String fullName,
-    int age,
-    String location,
-    String medicalConditions,
-    String password,
-    String imagePath,
-  ) async {
-    try {
-      await _profiles.doc(userId).update({
-        'fullName': fullName,
-        'age': age,
-        'location': location,
-        'medicalConditions': medicalConditions,
-        'password': password,
-        'imagePath': imagePath,
-        'timestamp': Timestamp.now(),
-      });
-    } catch (e) {
-      print('Error updating profile: $e');
-      // Throw an error or handle it in your UI as needed
-    }
-  }
-
-  Future<void> deleteProfile(String userId) async {
-    try {
-      await _profiles.doc(userId).delete();
-    } catch (e) {
-      print('Error deleting profile: $e');
-      // Throw an error or handle it in your UI as needed
-    }
-  }
+class FirebaseUser {
+  Null get uid => null;
 }

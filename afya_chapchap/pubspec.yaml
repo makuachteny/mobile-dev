@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  logger: 2.1.0
+  logger: ^2.1.0
 
   url_launcher: ^6.1.10
   flutter_local_notifications: ^16.3.2
@@ -42,7 +42,6 @@ dependencies:
   firebase_storage: ^11.6.6
   google_sign_in: ^6.2.1
   flutter_signin_button: ^2.0.0
-  firebase_app_check: ^0.2.1+16
 
 dev_dependencies:
   flutter_test:

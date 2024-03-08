@@ -10,9 +10,9 @@ class FirebaseAuthServices {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       return credential.user;
     } catch (e) {
-      print("There was an error signing up");
-      
-    }return null;
+      ("There was an error signing up");
+      return null;
+    }
   }
 
   Future<User?> signInWithEmailAndPassword(String email, String password) async {
@@ -21,6 +21,12 @@ class FirebaseAuthServices {
       return credential.user;
     } catch (e) {
       print("There was an error signing in");
-    }return null;
+      return null;
+    }
+  }
+
+  Future<String?> getCurrentUserId() async {
+    final User? user = _auth.currentUser;
+    return user?.uid; // Return the user ID if the user is authenticated, otherwise return null
   }
 }

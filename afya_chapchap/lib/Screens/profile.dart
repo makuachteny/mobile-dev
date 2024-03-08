@@ -1,24 +1,9 @@
-import 'dart:io';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:afya_chapchap/Services/profilecollection.dart';
-
-void main() {
-  runApp(MaterialApp(
-    theme: ThemeData(
-      primaryColor: Colors.blue,
-      colorScheme: ColorScheme.fromSwatch()
-          .copyWith(
-            secondary: const Color(0xFF0EA9FF),
-          )
-          .copyWith(
-            background: const Color(0xFFE0E0E0),
-          ),
-    ),
-    home: const ProfilePage(),
-  ));
-}
+import '../services/profilecollection.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -55,32 +40,41 @@ class _ProfilePageState extends State<ProfilePage> {
       String location = _locationController.text;
       String medicalConditions = _medicalConditionsController.text;
       String password = _passwordController.text;
-      // Remove the unused variable
-      _image != null ? _image!.path : '';
 
-      String userId = 'user123';
+      String imageUrl = '';
+      if (_image != null) {
+        imageUrl = await _profileCollection.uploadImage(_image!);
+      }
 
-      String imageUrl = await _profileCollection.uploadImage(userId, _image!);
+      String? userId = await _profileCollection.getCurrentUserId();
+      if (userId == null) {
+        throw Exception('Current user ID is null');
+      }
 
       await _profileCollection.updateProfile(
-        userId,
-        fullName,
-        age,
-        location,
-        medicalConditions,
-        password,
-        imageUrl, // Use imageUrl obtained from uploadImage method
+        fullName: fullName,
+        age: age,
+        location: location,
+        medicalConditions: medicalConditions,
+        password: password,
+        imageUrl: imageUrl,
+        userId: userId,
+        updatedFullName: fullName,
+        updatedAge: age,
+        updatedLocation: location,
+        updatedMedicalConditions: medicalConditions,
+        updatedPassword: password,
+        updatedImageUrl: imageUrl,
       );
 
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile updated successfully')),
       );
     } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to update profile')),
       );
+      // ignore: avoid_print
       print('Error updating profile: $e');
     }
   }
@@ -140,8 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: CircleAvatar(
                       radius: 30,
-                      backgroundImage:
-                          _image != null ? FileImage(_image!) : null,
+                      backgroundImage: _image != null ? FileImage(_image!) : null,
                     ),
                   ),
                   Positioned(
