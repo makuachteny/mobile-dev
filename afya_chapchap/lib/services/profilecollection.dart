@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import '../firebase_auth_implementation/firebase_auth_services.dart';
+import '../firebase_auth/firebase_auth_services.dart';
 
 class ProfileCollection {
   final CollectionReference _profiles =

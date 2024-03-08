@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import 'package:afya_chapchap/firebase_auth/google_auth_services.dart';
-=======
-// ignore_for_file: use_build_context_synchronously
 
-import 'package:afya_chapchap/firebase_auth_implementation/google_auth_services.dart';
->>>>>>> 394ecb7124fa26b1b7e5759b64e5dd9aced0e3b1
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
