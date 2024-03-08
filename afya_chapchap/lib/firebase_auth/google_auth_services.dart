@@ -31,5 +31,6 @@ class AuthService {
       print('Error signing in with Google: $e');
       return null;
     }
+    return null;
   }
 }
