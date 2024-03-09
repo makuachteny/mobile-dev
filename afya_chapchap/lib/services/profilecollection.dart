@@ -1,17 +1,24 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../firebase_auth/firebase_auth_services.dart';
 
 class ProfileCollection {
-  final CollectionReference _profiles =
-      FirebaseFirestore.instance.collection('profiles');
-  final Reference _profilesStorage =
-      FirebaseStorage.instance.ref().child('profiles');
+  final CollectionReference _profiles = FirebaseFirestore.instance.collection('profiles');
+  final Reference _profilesStorage = FirebaseStorage.instance.ref().child('profiles');
   final FirebaseAuthServices _firebaseAuthService = FirebaseAuthServices();
 
   Future<String?> getCurrentUserId() async {
     return await _firebaseAuthService.getCurrentUserId();
+  }
+
+  Future<Map<String, dynamic>?> getUserProfile(String userId) async {
+    DocumentSnapshot snapshot = await _profiles.doc(userId).get();
+    if (snapshot.exists) {
+      return snapshot.data() as Map<String, dynamic>?;
+    } else {
+      return null;
+    }
   }
 
   Future<String> uploadImage(File imageFile) async {
@@ -50,8 +57,7 @@ class ProfileCollection {
     }
 
     if (updatedMedicalConditions.contains('sensitive_information')) {
-      throw ArgumentError(
-          'Medical conditions should not contain sensitive information.');
+      throw ArgumentError('Medical conditions should not contain sensitive information.');
     }
 
     final profileData = {

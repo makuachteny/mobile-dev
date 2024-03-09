@@ -21,8 +21,35 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _medicalConditionsController =
       TextEditingController();
   File? _image;
-  final ProfileCollection _profileCollection = ProfileCollection();
+  late ProfileCollection _profileCollection = ProfileCollection();
 
+  @override
+  void initState() {
+    super.initState();
+    _profileCollection = ProfileCollection();
+    _fetchUserProfile();
+  }
+
+  Future<void> _fetchUserProfile() async {
+    try {
+      String? userId = await _profileCollection.getCurrentUserId();
+      Map<String, dynamic>? userProfile = await _profileCollection.getUserProfile(userId!);
+
+      if (userProfile != null) {
+        setState(() {
+          _fullNameController.text = userProfile['fullName'] ?? '';
+          _ageController.text = userProfile['age'] != null ? userProfile['age'].toString() : '';
+          _locationController.text = userProfile['location'] ?? '';
+          _medicalConditionsController.text = userProfile['medicalConditions'] ?? '';
+          _passwordController.text = ''; // Clear password field
+        });
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error fetching user profile: $e');
+      // Handle error
+    }
+  }
   Future<void> getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
 
