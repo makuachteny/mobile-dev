@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../services/profilecollection.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required void Function(String profileImageUrl, String fullName) updateProfile});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -45,11 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
           _medicalConditionsController.text =
               userProfile['medicalConditions'] ?? '';
           _passwordController.text = ''; // Clear password field
-          // Load profile image if available
-          String? imageUrl = userProfile['imageUrl'];
-          if (imageUrl != null && imageUrl.isNotEmpty) {
-            _image = File(imageUrl);
-          }
         });
       }
     } catch (e) {
@@ -249,3 +244,5 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+// ignore: camel_case_types
