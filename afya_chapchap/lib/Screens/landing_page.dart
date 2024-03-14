@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'appointment.dart';
@@ -47,12 +45,11 @@ class LandingPage extends StatelessWidget {
                       radius: 40,
                       backgroundColor: Colors.white,
                       // Replace with your profile picture
-                      backgroundImage:
-                          AssetImage('assets/imgs/profile_pic.png'),
+                      backgroundImage: AssetImage('assets/imgs/profile_pic.png'),
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Your Name',
+                      'Your Name', // Assuming 'Your Name' is a valid constant string
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -80,8 +77,9 @@ class LandingPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const ProfilePage()),
+                        builder: (BuildContext context) =>
+                             ProfilePage(updateProfile: (String profileImageUrl, String fullName) { },),
+                      ),
                     );
                   },
                 ),
@@ -93,8 +91,8 @@ class LandingPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const MessageScreen()),
+                        builder: (BuildContext context) => const MessageScreen(),
+                      ),
                     );
                   },
                 ),
@@ -106,8 +104,8 @@ class LandingPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const AfyaChapChapResourcePage()),
+                        builder: (BuildContext context) => const AfyaChapChapResourcePage(),
+                      ),
                     );
                   },
                 ),
@@ -116,7 +114,8 @@ class LandingPage extends StatelessWidget {
             const Spacer(), // Added Spacer to push the "Log Out" button to the bottom
             Padding(
               padding: const EdgeInsets.only(
-                  bottom: 16.0), // Added bottom padding for "Log Out" button
+                bottom: 16.0,
+              ), // Added bottom padding for "Log Out" button
               child: ListTile(
                 // Added ListTile for "Log Out" functionality
                 leading: const Icon(Icons.exit_to_app),
@@ -124,6 +123,7 @@ class LandingPage extends StatelessWidget {
                 onTap: () async {
                   await FirebaseAuth.instance.signOut();
                   Navigator.pushReplacement(
+                    // ignore: use_build_context_synchronously
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
@@ -155,8 +155,8 @@ class LandingPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          const AppointmentPage()),
+                    builder: (BuildContext context) => const AppointmentPage(),
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
