@@ -32,6 +32,7 @@ class LandingPage extends StatelessWidget {
             scaffoldKey.currentState?.openDrawer();
           },
         ),
+        centerTitle: true,
       ),
       drawer: Drawer(
         child: Column(

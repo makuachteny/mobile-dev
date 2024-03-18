@@ -38,7 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
       // Handle successful registration, e.g., navigate to the home page.
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LandingPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     } catch (e) {
       // Handle registration failure (e.g., display an error message).
