@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../services/profilecollection.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required void Function(String profileImageUrl, String fullName) updateProfile});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _medicalConditionsController =
       TextEditingController();
   File? _image;
-  late ProfileCollection _profileCollection = ProfileCollection();
+  late ProfileCollection _profileCollection;
 
   @override
   void initState() {
@@ -30,17 +30,20 @@ class _ProfilePageState extends State<ProfilePage> {
     _fetchUserProfile();
   }
 
-  Future<void> _fetchUserProfile() async {
+    Future<void> _fetchUserProfile() async {
     try {
       String? userId = await _profileCollection.getCurrentUserId();
-      Map<String, dynamic>? userProfile = await _profileCollection.getUserProfile(userId!);
+      Map<String, dynamic>? userProfile =
+          await _profileCollection.getUserProfile(userId!);
 
       if (userProfile != null) {
         setState(() {
           _fullNameController.text = userProfile['fullName'] ?? '';
-          _ageController.text = userProfile['age'] != null ? userProfile['age'].toString() : '';
+          _ageController.text =
+              userProfile['age'] != null ? userProfile['age'].toString() : '';
           _locationController.text = userProfile['location'] ?? '';
-          _medicalConditionsController.text = userProfile['medicalConditions'] ?? '';
+          _medicalConditionsController.text =
+              userProfile['medicalConditions'] ?? '';
           _passwordController.text = ''; // Clear password field
         });
       }
@@ -50,33 +53,24 @@ class _ProfilePageState extends State<ProfilePage> {
       // Handle error
     }
   }
-  Future<void> getImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
 
   Future<void> _updateProfile() async {
-  try {
-    String fullName = _fullNameController.text;
-    int age = int.tryParse(_ageController.text) ?? 0;
-    String location = _locationController.text;
-    String medicalConditions = _medicalConditionsController.text;
-    String password = _passwordController.text;
+    try {
+      String fullName = _fullNameController.text;
+      int age = int.tryParse(_ageController.text) ?? 0;
+      String location = _locationController.text;
+      String medicalConditions = _medicalConditionsController.text;
+      String password = _passwordController.text;
 
-    String imageUrl = '';
-    if (_image != null) {
-      imageUrl = await _profileCollection.uploadImage(_image!);
-    }
+      String imageUrl = '';
+      if (_image != null) {
+        imageUrl = await _profileCollection.uploadImage(_image!);
+      }
 
-    String? userId = await _profileCollection.getCurrentUserId();
-    if (userId == null) {
-      throw Exception('Current user ID is null');
-    }
+      String? userId = await _profileCollection.getCurrentUserId();
+      if (userId == null) {
+        throw Exception('Current user ID is null');
+      }
 
     await _profileCollection.updateProfile(
       fullName: fullName,
@@ -95,16 +89,27 @@ class _ProfilePageState extends State<ProfilePage> {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile updated successfully')),
-    );
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Failed to update profile')),
-    );
-    // ignore: avoid_print
-    print('Error updating profile: $e');
+        const SnackBar(content: Text('Profile updated successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to update profile')),
+      );
+      // ignore: avoid_print
+      print('Error updating profile: $e');
+    }
   }
-}
+
+  Future<void> getImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -239,3 +244,5 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+// ignore: camel_case_types
