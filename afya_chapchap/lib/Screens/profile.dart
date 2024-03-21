@@ -39,14 +39,14 @@ class _ProfilePageState extends State<ProfilePage> {
     String? fullName = prefs.getString('fullName');
     String? profileImageUrl = prefs.getString('profileImageUrl');
 
-    // If profile image URL is not available in SharedPreferences,
-    // fetch it from the database
+  
+    // fetch image from the database
     if (profileImageUrl == null) {
       String? userId = await _profileCollection.getCurrentUserId();
       Map<String, dynamic>? userProfile =
           await _profileCollection.getUserProfile(userId!);
 
-
+      // fetch profile details from database
       if (userProfile != null) {
         setState(() {
           _fullNameController.text = userProfile['fullName'] ?? '';
@@ -67,7 +67,6 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     } else {
-      // If profile image URL is available in SharedPreferences,
       // set the state with the fetched details
       setState(() {
         _fullNameController.text = fullName ?? '';
