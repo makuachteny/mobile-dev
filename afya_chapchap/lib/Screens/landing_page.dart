@@ -1,66 +1,121 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'appointment.dart';
 import 'message_screen.dart';
 import 'login.dart';
 import 'resources.dart';
 import 'profile.dart';
 
+
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
-  @override
+    @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    return const LandingPageStateful();
+  }
+}
 
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        title: const Text(
-          'AfyaChapChap',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
+class LandingPageStateful extends StatefulWidget {
+  const LandingPageStateful({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LandingPageState createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPageStateful> {
+  String _fullName = 'Your Name'; // Initialize with default value
+  String? _profileImageUrl; // Initialize with null
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProfileData(); // Fetch profile data when the widget initializes
+  }
+
+  // Define a method to retrieve profile data
+  Future<void> _fetchProfileData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _fullName = prefs.getString('fullName') ?? 'Your Name';
+      _profileImageUrl = prefs.getString('profileImageUrl');
+    });
+  }
+
+
+// Define a method to update the profile
+  void _updateProfile(String profileImageUrl, String fullName) {
+    // Update the state with the new profile data
+    setState(() {
+      _profileImageUrl = profileImageUrl;
+      _fullName = fullName;
+    });
+
+    // Store updated profile data persistently
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('fullName', fullName);
+      prefs.setString('profileImageUrl', profileImageUrl);
+    });
+  }
+
+
+@override
+Widget build(BuildContext context) {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  return Scaffold(
+    key: scaffoldKey,
+    appBar: AppBar(
+      title: const Text(
+        'AfyaChapChap',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
         ),
-        backgroundColor: Colors.blue,
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-        centerTitle: true,
       ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Center(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      // Replace with your profile picture
-                      backgroundImage: AssetImage('assets/imgs/profile_pic.png'),
+      backgroundColor: Colors.blue,
+      leading: _profileImageUrl != null
+        ? IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              scaffoldKey.currentState?.openDrawer();
+            },
+        )
+        : Container(), 
+      centerTitle: true,
+    ),
+    drawer: Drawer(
+      child: Column(
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.white,
+                    backgroundImage: _profileImageUrl != null 
+                    ? NetworkImage(_profileImageUrl!)
+                    : null
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    _fullName, // Use the updated full name
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Your Name', // Assuming 'Your Name' is a valid constant string
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
             Column(
               children: [
                 ListTile(
@@ -79,7 +134,7 @@ class LandingPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) =>
-                             ProfilePage(updateProfile: (String profileImageUrl, String fullName) { },),
+                             ProfilePage(onUpdateProfile: _updateProfile),
                       ),
                     );
                   },
