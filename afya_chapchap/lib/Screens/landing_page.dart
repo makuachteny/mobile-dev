@@ -134,7 +134,7 @@ Widget build(BuildContext context) {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) =>
-                             ProfilePage(onUpdateProfile: _updateProfile),
+                             ProfilePage(onUpdateProfile: _updateProfile, updateProfile: (String profileImageUrl, String fullName) {  },),
                       ),
                     );
                   },

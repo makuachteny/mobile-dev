@@ -79,7 +79,7 @@ void main() {
         home: const LandingPage(),
         routes: {
           '/profile': (context) => ProfilePage(
-                updateProfile: (String profileImageUrl, String fullName) {},
+                updateProfile: (String profileImageUrl, String fullName) {}, onUpdateProfile: (String profileImageUrl, String fullName) {  },
               ),
         },
       ),

@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   final void Function(String profileImageUrl, String fullName) onUpdateProfile;
-  const ProfilePage({super.key, required this.onUpdateProfile});
+  const ProfilePage({super.key, required this.onUpdateProfile, required Null Function(String profileImageUrl, String fullName) updateProfile});
 
   @override
   // ignore: library_private_types_in_public_api

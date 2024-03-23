@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: '>=3.3.2 <4.0.0'
 
 dependencies:
   flutter:
@@ -43,21 +43,27 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_signin_button: ^2.0.0
   cached_network_image: ^3.3.1
-<<<<<<< HEAD
   mockito: ^5.4.4
-=======
   http: ^1.2.1
   zego_express_engine: ^3.12.5
   shared_preferences: ^2.2.2
->>>>>>> 0ec8dd2a39d8d9bbde4e97aee0a0880becd8b00e
+
 
 dev_dependencies:
   build_runner: ^2.4.8
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.4
   provider: ^6.1.2
   test: ^1.24.9
+  integration_test:
+    sdk: flutter
+
+
+flutter_test:
+  suite:
+    drive:
+      target: test_driver/integration_test_driver.dart
+    all_tests: test/
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
