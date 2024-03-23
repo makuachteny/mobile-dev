@@ -1,3 +1,4 @@
+import 'package:afya_chapchap/services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'appointment.dart';
@@ -7,7 +8,10 @@ import 'resources.dart';
 import 'profile.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+  
+  LandingPage({super.key});
+
+  final FirestoreService firestoreService = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +127,7 @@ class LandingPage extends StatelessWidget {
                 title: const Text('Log Out'),
                 onTap: () async {
                   await FirebaseAuth.instance.signOut();
+                  // ignore: use_build_context_synchronously
                   Navigator.pushReplacement(
                     // ignore: use_build_context_synchronously
                     context,
@@ -156,7 +161,7 @@ class LandingPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => const AppointmentPage(),
+                    builder: (BuildContext context) => AppointmentPage(firestoreService: firestoreService,),
                   ),
                 );
               },

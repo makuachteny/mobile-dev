@@ -174,7 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LandingPage(),
+                          builder: (context) => LandingPage(),
                         ),
                       );
                     } catch (e) {
