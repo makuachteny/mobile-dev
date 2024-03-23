@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/profilecollection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key, required void Function(String profileImageUrl, String fullName) updateProfile});
+  final void Function(String profileImageUrl, String fullName) onUpdateProfile;
+  const ProfilePage({super.key, required this.onUpdateProfile});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
       TextEditingController();
   File? _image;
   late ProfileCollection _profileCollection;
+  String? _profileImageUrl;
 
   @override
   void initState() {
@@ -31,11 +34,19 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
     Future<void> _fetchUserProfile() async {
-    try {
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? fullName = prefs.getString('fullName');
+    String? profileImageUrl = prefs.getString('profileImageUrl');
+
+  
+    // fetch image from the database
+    if (profileImageUrl == null) {
       String? userId = await _profileCollection.getCurrentUserId();
       Map<String, dynamic>? userProfile =
           await _profileCollection.getUserProfile(userId!);
 
+      // fetch profile details from database
       if (userProfile != null) {
         setState(() {
           _fullNameController.text = userProfile['fullName'] ?? '';
@@ -45,6 +56,24 @@ class _ProfilePageState extends State<ProfilePage> {
           _medicalConditionsController.text =
               userProfile['medicalConditions'] ?? '';
           _passwordController.text = ''; // Clear password field
+          _profileImageUrl = userProfile['profileImageUrl'];
+
+          // Store fetched profile details in SharedPreferences
+          prefs.setString('fullName', fullName!);
+          prefs.setString('profileImageUrl', _profileImageUrl!);
+          prefs.setString('age', _ageController.text);
+          prefs.setString('location', _locationController.text);
+          prefs.setString('medicalConditions', _medicalConditionsController.text);
+        });
+      }
+    } else {
+      // set the state with the fetched details
+      setState(() {
+        _fullNameController.text = fullName ?? '';
+        _profileImageUrl = profileImageUrl;
+        _ageController.text = prefs.getString('age') ?? '';
+        _locationController.text = prefs.getString('location') ?? '';
+        _medicalConditionsController.text = prefs.getString('medicalConditions') ?? '';
         });
       }
     } catch (e) {
@@ -53,6 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
       // Handle error
     }
   }
+
 
   Future<void> _updateProfile() async {
     try {
@@ -87,6 +117,19 @@ class _ProfilePageState extends State<ProfilePage> {
       updatedPassword: password,
       updatedImageUrl: imageUrl,
     );
+
+    // After successfully updating the profile
+      widget.onUpdateProfile(imageUrl, fullName);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('fullName', fullName);
+      prefs.setString('profileImageUrl', imageUrl);
+      prefs.setString('age', age.toString());
+      prefs.setString('location', location);
+      prefs.setString('medicalConditions', medicalConditions);
+
+      // After successfully updating the profile
+    widget.onUpdateProfile(imageUrl, fullName);
 
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile updated successfully')),
@@ -166,9 +209,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: CircleAvatar(
                       radius: 30,
-                      backgroundImage: _image != null ? FileImage(_image!) : null,
+                      backgroundColor: Colors.white,
+                      backgroundImage: _image != null
+                      ? FileImage(_image!)
+                      : _profileImageUrl != null
+                      ?NetworkImage(_profileImageUrl!)
+                      :null as ImageProvider<Object>?,
                     ),
-                  ),
+                  ),                
+
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -245,4 +294,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
+
 // ignore: camel_case_types
+
+
