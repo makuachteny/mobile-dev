@@ -3,8 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 
 class FirebaseAuthServices {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   final Logger _logger = Logger();
+  // Add a setter or a method to set the _auth instance
+  void setAuthInstance(FirebaseAuth instance) {
+    _auth = instance;
+  }
+
 
   // Sign up with email and password
   Future<String> signUpWithEmailAndPassword({

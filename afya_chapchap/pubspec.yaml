@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: '>=3.3.2 <4.0.0'
 
 dependencies:
   flutter:
@@ -28,9 +28,9 @@ dependencies:
   logger: ^2.1.0
 
   url_launcher: ^6.1.10
-  flutter_local_notifications: ^16.3.2
+  flutter_local_notifications: ^17.0.0
   flutter_webrtc: ^0.9.48+hotfix.1
-  audioplayers: ^5.2.1
+  audioplayers: ^6.0.0
   cupertino_icons: ^1.0.2
   flutter_lints: ^3.0.1
   zego_uikit_prebuilt_video_conference: ^2.6.9
@@ -43,12 +43,31 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_signin_button: ^2.0.0
   cached_network_image: ^3.3.1
+  mockito: ^5.4.4
+  http: ^1.2.1
+  zego_express_engine: ^3.12.5
+  shared_preferences: ^2.2.2
+
 
 dev_dependencies:
+  build_runner: ^2.4.8
   flutter_test:
     sdk: flutter
+<<<<<<< HEAD
   mockito: ^5.4.4
+=======
+  provider: ^6.1.2
+>>>>>>> f3837b35d8f075d24c5e9c52fbbd43ec70979821
   test: ^1.24.9
+  integration_test:
+    sdk: flutter
+
+
+flutter_test:
+  suite:
+    drive:
+      target: test_driver/integration_test_driver.dart
+    all_tests: test/
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
