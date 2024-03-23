@@ -216,7 +216,7 @@ Widget build(BuildContext context) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => AppointmentPage(firestoreService: firestoreService,),
+                    builder: (BuildContext context) => const AppointmentPage(),
                   ),
                 );
               },

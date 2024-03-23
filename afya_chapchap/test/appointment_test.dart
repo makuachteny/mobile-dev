@@ -39,8 +39,8 @@ Future<void> main() async {
       });
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: AppointmentPage(firestoreService: mockFirestoreService),
+        const MaterialApp(
+          home: AppointmentPage(),
         ),
       );
 
@@ -72,8 +72,8 @@ Future<void> main() async {
     testWidgets('openAppointmentBox should show dialog with fields', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        MaterialApp(
-          home: AppointmentPage(firestoreService: mockFirestoreService),
+        const MaterialApp(
+          home: AppointmentPage(),
         ),
       );
 
@@ -91,8 +91,8 @@ Future<void> main() async {
     testWidgets('_showDatePicker should update date when a new date is selected', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        MaterialApp(
-          home: AppointmentPage(firestoreService: mockFirestoreService),
+        const MaterialApp(
+          home: AppointmentPage(),
         ),
       );
       final selectedDate = DateTime(2023, 4, 15);
@@ -114,8 +114,8 @@ Future<void> main() async {
     testWidgets('_showTimePicker should update time when a new time is selected', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        MaterialApp(
-          home: AppointmentPage(firestoreService: mockFirestoreService),
+        const MaterialApp(
+          home: AppointmentPage(),
         ),
       );
       const selectedTime = TimeOfDay(hour: 10, minute: 30);
