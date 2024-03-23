@@ -56,7 +56,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: const LandingPage(),
+        home: LandingPage(),
         routes: {
           '/appointment': (context) => const AppointmentPage(),
         },
@@ -76,7 +76,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: const LandingPage(),
+        home: LandingPage(),
         routes: {
           '/profile': (context) => ProfilePage(
                 updateProfile: (String profileImageUrl, String fullName) {}, onUpdateProfile: (String profileImageUrl, String fullName) {  },
@@ -98,7 +98,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: const LandingPage(),
+        home: LandingPage(),
         routes: {
           '/login': (context) => const LoginPage(),
         },
