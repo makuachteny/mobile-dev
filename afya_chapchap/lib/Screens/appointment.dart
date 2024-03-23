@@ -4,13 +4,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentPage extends StatefulWidget {
-  const AppointmentPage({super.key});
+  final FirestoreService firestoreService;
+
+  const AppointmentPage({super.key, required this.firestoreService});
+
+  // @override
+  // _AppointmentPageState createState() => _AppointmentPageState();
+  // const AppointmentPage({super.key});
 
   @override
-  State<AppointmentPage> createState() => _AppointmentPageState();
+  State<AppointmentPage> createState() => AppointmentPageState();
 }
 
-class _AppointmentPageState extends State<AppointmentPage> {
+class AppointmentPageState extends State<AppointmentPage> {
   final FirestoreService firestoreService = FirestoreService();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
