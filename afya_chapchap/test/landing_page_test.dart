@@ -8,10 +8,9 @@ import 'package:afya_chapchap/Screens/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
-  // Initialize Firebase
-  TestWidgetsFlutterBinding.ensureInitialized();
-  WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  setUpAll(() async {
+    await Firebase.initializeApp();
+  });
 
   testWidgets('LandingPage should render correctly',
       (WidgetTester tester) async {
@@ -20,7 +19,6 @@ void main() {
         home: LandingPage(),
       ),
     );
-
     // Verify that the app bar title is 'AfyaChapChap'
     expect(find.text('AfyaChapChap'), findsOneWidget);
 
@@ -79,7 +77,8 @@ void main() {
         home: LandingPage(),
         routes: {
           '/profile': (context) => ProfilePage(
-                updateProfile: (String profileImageUrl, String fullName) {}, onUpdateProfile: (String profileImageUrl, String fullName) {  },
+                updateProfile: (String profileImageUrl, String fullName) {},
+                onUpdateProfile: (String profileImageUrl, String fullName) {},
               ),
         },
       ),
