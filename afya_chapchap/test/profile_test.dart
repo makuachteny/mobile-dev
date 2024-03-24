@@ -1,24 +1,30 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:afya_chapchap/Screens/profile.dart';
 import 'package:mockito/mockito.dart';
 
-// Mock FirebaseFirestore
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 class FirebaseFirestore {
 }
 
 void main() {
+  // Initialize the Firebase app before running tests
+  setupFirebaseAuthMocks();
 
-  setUp(() {
+  setUpAll(() async {
+    await Firebase.initializeApp();
   });
 
-  testWidgets('ProfilePage should display UI elements correctly', (WidgetTester tester) async {
+  setUp(() {});
+
+  testWidgets('ProfilePage should display UI elements correctly',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: ProfilePage(
-          onUpdateProfile: (profileImageUrl, fullName) {}, 
+          onUpdateProfile: (profileImageUrl, fullName) {},
           updateProfile: (String profileImageUrl, String fullName) {},
         ),
       ),
@@ -44,10 +50,13 @@ void main() {
     expect(find.text('Update Profile'), findsOneWidget);
 
     // Verify that the user can enter text into the text fields
-    await tester.enterText(find.byKey(const Key('fullNameTextField')), 'Mary Akinyi');
+    await tester.enterText(
+        find.byKey(const Key('fullNameTextField')), 'Mary Akinyi');
     await tester.enterText(find.byKey(const Key('ageTextField')), '35');
-    await tester.enterText(find.byKey(const Key('locationTextField')), 'Nairobi');
-    await tester.enterText(find.byKey(const Key('medicalConditionsTextField')), 'None');
+    await tester.enterText(
+        find.byKey(const Key('locationTextField')), 'Nairobi');
+    await tester.enterText(
+        find.byKey(const Key('medicalConditionsTextField')), 'None');
     await tester.enterText(find.byKey(const Key('passwordTextField')), 'password');
 
     // Verify that the 'Update Profile' button is disabled when the form is empty
@@ -57,16 +66,21 @@ void main() {
     expect(find.text('Update Profile'), findsOneWidget);
 
     // Verify that the 'Update Profile' button is enabled when the form is filled
-    await tester.enterText(find.byKey(const Key('fullNameTextField')), 'John Doe');
-    await tester.enterText(find.byKey(const Key('ageTextField')), '25');
-    await tester.enterText(find.byKey(const Key('locationTextField')), 'New York');
-    await tester.enterText(find.byKey(const Key('medicalConditionsTextField')), 'None');
+    await tester.enterText(
+        find.byKey(const Key('fullNameTextField')), 'Mary Akinyi');
+    await tester.enterText(find.byKey(const Key('ageTextField')), '35');
+    await tester.enterText(
+        find.byKey(const Key('locationTextField')), 'Nairobi');
+    await tester.enterText(
+        find.byKey(const Key('medicalConditionsTextField')), 'None');
     await tester.enterText(find.byKey(const Key('passwordTextField')), 'password');
     expect(find.byType(ElevatedButton).first, findsOneWidget);
 
     // Verify that the user can update their profile information
     await tester.tap(find.byType(ElevatedButton).first);
     await tester.pumpAndSettle();
-    
   });
+}
+
+void setupFirebaseAuthMocks() {
 }

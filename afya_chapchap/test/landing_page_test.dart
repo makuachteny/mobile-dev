@@ -15,7 +15,7 @@ void main() {
   testWidgets('LandingPage should render correctly',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+       MaterialApp(
         home: LandingPage(),
       ),
     );
