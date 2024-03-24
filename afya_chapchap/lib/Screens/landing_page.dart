@@ -66,132 +66,144 @@ class _LandingPageState extends State<LandingPageStateful> {
 
 
 @override
-Widget build(BuildContext context) {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  return Scaffold(
-    key: scaffoldKey,
-    appBar: AppBar(
-      title: const Text(
-        'AfyaChapChap',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: const Text(
+          'AfyaChapChap',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
         ),
+        backgroundColor: Colors.blue,
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            scaffoldKey.currentState?.openDrawer();
+          },
+        ),
+        centerTitle: true,
       ),
-      backgroundColor: Colors.blue,
-      leading: _profileImageUrl != null
-        ? IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              scaffoldKey.currentState?.openDrawer();
-            },
-        )
-        : Container(), 
-      centerTitle: true,
-    ),
-    drawer: Drawer(
-      child: Column(
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Center(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.white,
-                    backgroundImage: _profileImageUrl != null 
-                    ? NetworkImage(_profileImageUrl!)
-                    : null
+      drawer: GestureDetector(
+        onHorizontalDragUpdate: (details) {
+          if (details.delta.dx > 0) {
+            scaffoldKey.currentState?.openDrawer();
+          }
+        },
+        child: Drawer(
+          child: Column(
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.grey[300],
+                        backgroundImage: _profileImageUrl != null
+                            ? NetworkImage(_profileImageUrl!)
+                            : null,
+                        child: _profileImageUrl == null
+                            ? const Icon(Icons.person)
+                            : null,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        _fullName, // Use the updated full name
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    _fullName, // Use the updated full name
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+              ),
+              Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.home),
+                    title: const Text('Home'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('Profile'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => ProfilePage(
+                            onUpdateProfile: _updateProfile,
+                            updateProfile: (String profileImageUrl,
+                                String fullName) {},
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.calendar_today),
+                    title: const Text('Appointments'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const MessageScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.library_books),
+                    title: const Text('Resources'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const AfyaChapChapResourcePage(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
-            ),
-          ),
-            Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.home),
-                  title: const Text('Home'),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: const Text('Profile'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
+              const Spacer(), // Added Spacer to push the "Log Out" button to the bottom
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                ), // Added bottom padding for "Log Out" button
+                child: ListTile(
+                  // Added ListTile for "Log Out" functionality
+                  leading: const Icon(Icons.exit_to_app),
+                  title: const Text('Log Out'),
+                  onTap: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(
+                      // ignore: use_build_context_synchronously
                       context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                             ProfilePage(onUpdateProfile: _updateProfile, updateProfile: (String profileImageUrl, String fullName) {  },),
-                      ),
+                      MaterialPageRoute(builder: (context) => const LoginPage()),
                     );
                   },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.calendar_today),
-                  title: const Text('Appointments'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => const MessageScreen(),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.library_books),
-                  title: const Text('Resources'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => const AfyaChapChapResourcePage(),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-            const Spacer(), // Added Spacer to push the "Log Out" button to the bottom
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16.0,
-              ), // Added bottom padding for "Log Out" button
-              child: ListTile(
-                // Added ListTile for "Log Out" functionality
-                leading: const Icon(Icons.exit_to_app),
-                title: const Text('Log Out'),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
-                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Column(
