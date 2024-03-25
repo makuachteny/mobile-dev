@@ -1,10 +1,22 @@
-// ignore_for_file: use_build_context_synchronously
-
+// ignore_for_file: use_build_context_synchronously, avoid_print
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/profilecollection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:afya_chapchap/firebase_options.dart';
+
+Future<void> _initializeFirebase() async {
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform, 
+    );
+    print('Firebase initialized successfully');
+  } catch (e) {
+    print('Error initializing Firebase: $e');
+  }
+}
 
 class ProfilePage extends StatefulWidget {
   final void Function(String profileImageUrl, String fullName) onUpdateProfile;
@@ -29,9 +41,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _profileCollection = ProfileCollection();
-    _fetchUserProfile();
+    _initializeFirebase().then((_) {
+      _profileCollection = ProfileCollection();
+      _fetchUserProfile();
+    });
   }
+
 
     Future<void> _fetchUserProfile() async {
   try {
@@ -67,7 +82,6 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     } else {
-      // set the state with the fetched details
       setState(() {
         _fullNameController.text = fullName ?? '';
         _profileImageUrl = profileImageUrl;
@@ -77,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     } catch (e) {
-      // ignore: avoid_print
+      
       print('Error fetching user profile: $e');
       // Handle error
     }
@@ -138,7 +152,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to update profile')),
       );
-      // ignore: avoid_print
       print('Error updating profile: $e');
     }
   }
@@ -154,18 +167,16 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        backgroundColor: Colors.blue,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Profile'),
+      backgroundColor: Colors.blue,
+    ),
+    body: ListView(
+      padding: const EdgeInsets.all(20.0),
+      children: [
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -289,12 +300,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
-
-
-// ignore: camel_case_types
-
-
