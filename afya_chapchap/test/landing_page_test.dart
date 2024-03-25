@@ -15,7 +15,7 @@ void main() {
   testWidgets('LandingPage should render correctly',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-       MaterialApp(
+       const MaterialApp(
         home: LandingPage(),
       ),
     );
@@ -54,7 +54,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: LandingPage(),
+        home: const LandingPage(),
         routes: {
           '/appointment': (context) => const AppointmentPage(),
         },
@@ -74,7 +74,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: LandingPage(),
+        home: const LandingPage(),
         routes: {
           '/profile': (context) => ProfilePage(
                 updateProfile: (String profileImageUrl, String fullName) {},
@@ -97,7 +97,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: LandingPage(),
+        home: const LandingPage(),
         routes: {
           '/login': (context) => const LoginPage(),
         },

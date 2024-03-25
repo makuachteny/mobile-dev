@@ -135,7 +135,7 @@ SignInButton(
       // Navigate to the next screen after successful sign-in
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LandingPage()),
+        MaterialPageRoute(builder: (context) => const LandingPage()),
       );
     } catch (e) {
       // Handle sign-in errors here
@@ -177,7 +177,7 @@ SignInButton(
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LandingPage()),
+          MaterialPageRoute(builder: (context) => const LandingPage()),
         );
       }
     } catch (e) {

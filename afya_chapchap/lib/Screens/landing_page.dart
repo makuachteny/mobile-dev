@@ -1,5 +1,5 @@
-import 'package:afya_chapchap/services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'appointment.dart';
@@ -8,12 +8,22 @@ import 'login.dart';
 import 'resources.dart';
 import 'profile.dart';
 
+import '../firebase_options.dart';
 
+
+Future<void> _initializeFirebase() async {
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    print('Firebase initialized successfully');
+  } catch (e) {
+    print('Error initializing Firebase: $e');
+  }
+}
 class LandingPage extends StatelessWidget {
   
-  LandingPage({super.key});
-
-  final FirestoreService firestoreService = FirestoreService();
+  const LandingPage({super.key});
 
     @override
   Widget build(BuildContext context) {
@@ -36,6 +46,7 @@ class _LandingPageState extends State<LandingPageStateful> {
   @override
   void initState() {
     super.initState();
+    _initializeFirebase();
     _fetchProfileData(); // Fetch profile data when the widget initializes
   }
 

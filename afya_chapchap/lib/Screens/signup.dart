@@ -1,11 +1,24 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, avoid_print
 
+import 'package:afya_chapchap/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:afya_chapchap/Screens/landing_page.dart';
 import 'package:afya_chapchap/Screens/login.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import '../firebase_auth/google_auth_services.dart';
+
+Future<void> _initializeFirebase() async {
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    print('Firebase initialized successfully');
+  } catch (e) {
+    print('Error initializing Firebase: $e');
+  }
+}
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -18,6 +31,12 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _fullnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeFirebase(); // Call _initializeFirebase here in initState
+  }
 
   @override
   void dispose() {
@@ -174,7 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LandingPage(),
+                          builder: (context) => const LandingPage(),
                         ),
                       );
                     } catch (e) {
