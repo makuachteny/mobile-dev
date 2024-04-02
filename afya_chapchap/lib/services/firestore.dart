@@ -75,4 +75,9 @@ class FirestoreService {
   Future<void> deleteAppointment(String docID) {
     return appointments.doc(docID).delete();
   }
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<DocumentSnapshot> getAppointmentDocument(String docID) {
+    return _firestore.collection('appointments').doc(docID).get();
+  }
 }

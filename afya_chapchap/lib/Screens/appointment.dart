@@ -8,12 +8,6 @@ import 'package:uuid/uuid.dart';
 // ignore: must_be_immutable
 class AppointmentPage extends StatefulWidget {
   String meetingLink = '';
-  //final FirestoreService firestoreService;
-
-  //const AppointmentPage({super.key, required this.firestoreService});
-
-  // @override
-  // AppointmentPageState createState() => AppointmentPageState();
   AppointmentPage({super.key});
 
   @override
@@ -68,42 +62,110 @@ class AppointmentPageState extends State<AppointmentPage> {
                 String date = data['date'];
                 String time = data['time'];
 
-                return ListTile(
-                  title: Text(name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('$date at $time'),
-                      Text(description),
-                      if (data['meetingLink'] != null &&
-                          data['meetingLink'].isNotEmpty)
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MeetingScreen(
-                                    meetingLink: data['meetingLink']),
-                              ),
-                            );
-                          },
-                          child: Text("Meeting Link: ${data['meetingLink']}"),
+                return InkWell(
+                  // Wrapped the appointment item with InkWell for tap handling
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        contentPadding: const EdgeInsets.all(40),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                    ],
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () => openAppointmentBox(docID: docID),
-                        icon: const Icon(Icons.settings),
+                        title: Text(name),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '$date at $time',
+                              style: const TextStyle(
+                              fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              description,
+                              style: const TextStyle(
+                              fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            if (data['meetingLink'] != null &&
+                                data['meetingLink'].isNotEmpty)
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MeetingScreen(
+                                          meetingLink: data['meetingLink']),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Meeting Link: ${data['meetingLink']}",
+                                  style: const TextStyle(
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Close'),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        onPressed: () =>
-                            firestoreService.deleteAppointment(docID),
-                        icon: const Icon(Icons.delete),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey.shade300),
                       ),
-                    ],
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(date),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => openAppointmentBox(
+                            docID: docID,
+                            // Pass a callback function to update the main UI after saving the appointment
+                            updateCallback: () {
+                              setState(() {
+                                // No need to do anything here, just trigger a rebuild
+                              });
+                            },
+                          ),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          onPressed: () =>
+                              firestoreService.deleteAppointment(docID),
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -116,14 +178,37 @@ class AppointmentPageState extends State<AppointmentPage> {
     );
   }
 
-  void openAppointmentBox({String? docID}) {
+  void openAppointmentBox({String? docID, Function? updateCallback}) {
     String newMeetingLink = '';
+
+    nameController.clear();
+    descriptionController.clear();
+    dateController.clear();
+    timeController.clear();
 
     if (docID == null) {
       // Generate a new meeting link for a new appointment
       var uuid = const Uuid();
       newMeetingLink = 'https://afyachapchap/meeting/${uuid.v4()}';
     }
+
+     // ignore: unused_local_variable
+     String? existingMeetingLink;
+    if (docID != null) {
+  // Pre-fill the text fields with the existing appointment data
+  Future<DocumentSnapshot<Object?>> futureDocument =
+      firestoreService.getAppointmentDocument(docID);
+
+  futureDocument.then((document) {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    nameController.text = data['name'];
+    descriptionController.text = data['description'];
+    dateController.text = data['date'];
+    timeController.text = data['time'];
+    existingMeetingLink = data['meetingLink'];
+  });
+}
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -205,8 +290,8 @@ class AppointmentPageState extends State<AppointmentPage> {
                   nameController.text,
                   descriptionController.text,
                   dateController.text,
-                  dateController.text,
                   timeController.text,
+                  existingMeetingLink ?? '',
                 );
               }
               nameController.clear();
@@ -214,8 +299,11 @@ class AppointmentPageState extends State<AppointmentPage> {
               dateController.clear();
               timeController.clear();
               Navigator.pop(context);
+              if (updateCallback != null) {
+              updateCallback();
+            }
             },
-            child: const Text('Add'),
+            child: const Text('Save'),
           )
         ],
       ),
