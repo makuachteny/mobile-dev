@@ -39,7 +39,7 @@ Future<void> main() async {
       });
 
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: AppointmentPage(),
         ),
       );
@@ -72,7 +72,7 @@ Future<void> main() async {
     testWidgets('openAppointmentBox should show dialog with fields', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: AppointmentPage(),
         ),
       );
@@ -91,7 +91,7 @@ Future<void> main() async {
     testWidgets('_showDatePicker should update date when a new date is selected', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: AppointmentPage(),
         ),
       );
@@ -114,7 +114,7 @@ Future<void> main() async {
     testWidgets('_showTimePicker should update time when a new time is selected', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: AppointmentPage(),
         ),
       );
@@ -167,6 +167,7 @@ Future<void> main() async {
         'Updated Description',
         '22/03/2024',
         '11:00 AM',
+        'userUID',
       );
 
       // Assert
@@ -176,6 +177,7 @@ Future<void> main() async {
         'Updated Description',
         '22/03/2024',
         '11:00 AM',
+        'userUID',
       )).called(1);
     });
 
