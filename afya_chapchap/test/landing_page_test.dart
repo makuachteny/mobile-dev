@@ -56,7 +56,7 @@ void main() {
       MaterialApp(
         home: const LandingPage(),
         routes: {
-          '/appointment': (context) => const AppointmentPage(),
+          '/appointment': (context) => AppointmentPage(),
         },
       ),
     );
