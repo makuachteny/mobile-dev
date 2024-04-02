@@ -47,7 +47,6 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-
     Future<void> _fetchUserProfile() async {
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
