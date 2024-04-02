@@ -7,6 +7,7 @@ import 'message_screen.dart';
 import 'login.dart';
 import 'resources.dart';
 import 'profile.dart';
+import 'ml_learning.dart';
 
 import '../firebase_options.dart';
 
@@ -192,6 +193,17 @@ class _LandingPageState extends State<LandingPageStateful> {
                       );
                     },
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.code),
+                    title: const Text('ML Learning'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MLLearningPage()),
+                      );
+                    },
+                  ),
                 ],
               ),
               const Spacer(), // Added Spacer to push the "Log Out" button to the bottom
@@ -239,7 +251,7 @@ class _LandingPageState extends State<LandingPageStateful> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => const AppointmentPage(),
+                    builder: (BuildContext context) => AppointmentPage(),
                   ),
                 );
               },

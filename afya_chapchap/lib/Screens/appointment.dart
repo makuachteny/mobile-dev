@@ -1,16 +1,20 @@
+import 'package:afya_chapchap/Screens/meeting_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:afya_chapchap/services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
+// ignore: must_be_immutable
 class AppointmentPage extends StatefulWidget {
+  String meetingLink = '';
   //final FirestoreService firestoreService;
 
   //const AppointmentPage({super.key, required this.firestoreService});
 
   // @override
   // AppointmentPageState createState() => AppointmentPageState();
-  const AppointmentPage({super.key});
+  AppointmentPage({super.key});
 
   @override
   State<AppointmentPage> createState() => AppointmentPageState();
@@ -32,20 +36,20 @@ class AppointmentPageState extends State<AppointmentPage> {
       appBar: AppBar(
         title: const Text(
           'Book an Appointment',
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: Colors.blue[900],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => openAppointmentBox(),
         child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add),
-                  SizedBox(width: 4.0),
-                ],
-              ),
-        
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add),
+            SizedBox(width: 4.0),
+          ],
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestoreService.getUserAppointmentsStream(),
@@ -71,6 +75,20 @@ class AppointmentPageState extends State<AppointmentPage> {
                     children: [
                       Text('$date at $time'),
                       Text(description),
+                      if (data['meetingLink'] != null &&
+                          data['meetingLink'].isNotEmpty)
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MeetingScreen(
+                                    meetingLink: data['meetingLink']),
+                              ),
+                            );
+                          },
+                          child: Text("Meeting Link: ${data['meetingLink']}"),
+                        ),
                     ],
                   ),
                   trailing: Row(
@@ -99,6 +117,13 @@ class AppointmentPageState extends State<AppointmentPage> {
   }
 
   void openAppointmentBox({String? docID}) {
+    String newMeetingLink = '';
+
+    if (docID == null) {
+      // Generate a new meeting link for a new appointment
+      var uuid = const Uuid();
+      newMeetingLink = 'https://afyachapchap/meeting/${uuid.v4()}';
+    }
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -172,6 +197,7 @@ class AppointmentPageState extends State<AppointmentPage> {
                   dateController.text,
                   timeController.text,
                   userUID,
+                  meetingLink: newMeetingLink,
                 );
               } else {
                 firestoreService.updateAppointment(
@@ -179,8 +205,8 @@ class AppointmentPageState extends State<AppointmentPage> {
                   nameController.text,
                   descriptionController.text,
                   dateController.text,
+                  dateController.text,
                   timeController.text,
-                  
                 );
               }
               nameController.clear();
