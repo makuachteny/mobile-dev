@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'appointment.dart';
 import 'message_screen.dart';
+import 'appointment.dart';
 import 'login.dart';
 import 'resources.dart';
 import 'profile.dart';
@@ -174,7 +175,7 @@ class _LandingPageState extends State<LandingPageStateful> {
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              const MessageScreen(),
+                              AppointmentPage(),
                         ),
                       );
                     },
