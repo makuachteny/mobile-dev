@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
-    // get collection of appointments
+  // get collection of appointments
   final CollectionReference appointments =
       FirebaseFirestore.instance.collection('appointments');
 
@@ -12,8 +12,9 @@ class FirestoreService {
     String description,
     String date,
     String time,
-    String userUID,
-  ) {
+    String userUID, {
+    String meetingLink = '',
+  }) {
     return appointments.add({
       'name': name,
       'description': description,
@@ -21,10 +22,11 @@ class FirestoreService {
       'time': time,
       'timestamp': Timestamp.now(),
       'uid': userUID,
+      'meetingLink': meetingLink,
     });
   }
 
- //READ: get appointments from the database
+  //READ: get appointments from the database
   // Stream<QuerySnapshot> getAppointmentsStream() {
   //   final appointmentsStream =
   //       appointments.orderBy('timestamp', descending: true).snapshots();
@@ -33,22 +35,23 @@ class FirestoreService {
   // }
   Stream<QuerySnapshot> getUserAppointmentsStream() {
     String userUID = FirebaseAuth.instance.currentUser?.uid ?? '';
-    
-  //   print('Fetching appointments for user: $userUID');
-  //   final query = appointments
-  //     .where('uid', isEqualTo: userUID)
-  //     .orderBy('timestamp', descending: true);
-  //   print('Query: $query');
-  //   return query.snapshots().handleError((error) {
-  //     print('Error fetching appointments: $error');
-  //     return null;
-  // });
+
+    //   print('Fetching appointments for user: $userUID');
+    //   final query = appointments
+    //     .where('uid', isEqualTo: userUID)
+    //     .orderBy('timestamp', descending: true);
+    //   print('Query: $query');
+    //   return query.snapshots().handleError((error) {
+    //     print('Error fetching appointments: $error');
+    //     return null;
+    // });
 
     return appointments
         .where('uid', isEqualTo: userUID)
         .orderBy('timestamp', descending: true)
         .snapshots();
-    }
+  }
+
   //UPDATE: update appointments given a doc id
   Future<void> updateAppointment(
     String docID,
@@ -56,7 +59,7 @@ class FirestoreService {
     String description,
     String date,
     String time,
-  
+    String meetingLink,
   ) {
     return appointments.doc(docID).update({
       'name': name,
@@ -64,7 +67,7 @@ class FirestoreService {
       'date': date,
       'time': time,
       'timestamp': Timestamp.now(),
-  
+      'meetingLink': meetingLink,
     });
   }
 
