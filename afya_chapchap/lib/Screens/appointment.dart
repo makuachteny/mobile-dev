@@ -211,103 +211,176 @@ class AppointmentPageState extends State<AppointmentPage> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        content: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () => _showDatePicker(context),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Date',
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          dateController.text.isNotEmpty
-                              ? dateController.text
-                              : '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-                          style: const TextStyle(fontSize: 20.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: InkWell(
-                    onTap: () => _showTimePicker(context),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Time',
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          timeController.text.isNotEmpty
-                              ? timeController.text
-                              : selectedTime.format(context),
-                          style: const TextStyle(fontSize: 20.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              if (docID == null) {
-                String userUID = FirebaseAuth.instance.currentUser?.uid ?? '';
-                firestoreService.addAppointment(
-                  nameController.text,
-                  descriptionController.text,
-                  dateController.text,
-                  timeController.text,
-                  userUID,
-                  meetingLink: newMeetingLink,
-                );
-              } else {
-                firestoreService.updateAppointment(
-                  docID,
-                  nameController.text,
-                  descriptionController.text,
-                  dateController.text,
-                  timeController.text,
-                  existingMeetingLink ?? '',
-                );
-              }
-              nameController.clear();
-              descriptionController.clear();
-              dateController.clear();
-              timeController.clear();
-              Navigator.pop(context);
-              if (updateCallback != null) {
-              updateCallback();
-            }
-            },
-            child: const Text('Save'),
-          )
-        ],
+      builder: (context) => Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
       ),
-    );
+      insetPadding: EdgeInsets.zero,
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Name',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  hintText: 'Enter name...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Description',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(
+                  hintText: 'Appointment description...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => _showDatePicker(context),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Date',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Text(
+                            dateController.text.isNotEmpty
+                                ? dateController.text
+                                : '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+                            style: const TextStyle(fontSize: 20.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20.0),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => _showTimePicker(context),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Time',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Text(
+                            timeController.text.isNotEmpty
+                                ? timeController.text
+                                : selectedTime.format(context),
+                            style: const TextStyle(fontSize: 20.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24.0),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(0, 76, 255, 0.921),
+                    foregroundColor: Colors.white,
+                    elevation: 5.0,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (docID == null) {
+                  String userUID = FirebaseAuth.instance.currentUser?.uid ?? '';
+                  firestoreService.addAppointment(
+                    nameController.text,
+                    descriptionController.text,
+                    dateController.text,
+                    timeController.text,
+                    userUID,
+                    meetingLink: newMeetingLink,
+                  );
+                } else {
+                  firestoreService.updateAppointment(
+                    docID,
+                    nameController.text,
+                    descriptionController.text,
+                    dateController.text,
+                    timeController.text,
+                    existingMeetingLink ?? '',
+                  );
+                }
+                nameController.clear();
+                descriptionController.clear();
+                dateController.clear();
+                timeController.clear();
+                Navigator.pop(context);
+                if (updateCallback != null) {
+                updateCallback();
+              }
+                  },
+                  child: const Text(
+                    'CREATE APPOINTMENT',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+);
   }
 
   void _showDatePicker(BuildContext context) async {
