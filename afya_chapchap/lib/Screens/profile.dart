@@ -11,7 +11,7 @@ import 'package:afya_chapchap/firebase_options.dart';
 Future<void> _initializeFirebase() async {
   try {
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform, 
+      options: DefaultFirebaseOptions.currentPlatform,
     );
     print('Firebase initialized successfully');
   } catch (e) {
@@ -21,7 +21,7 @@ Future<void> _initializeFirebase() async {
 
 class ProfilePage extends StatefulWidget {
   final void Function(String profileImageUrl, String fullName) onUpdateProfile;
-  
+
   const ProfilePage({
     super.key,
     required this.onUpdateProfile, required Null Function(String profileImageUrl, String fullName) updateProfile,
@@ -68,8 +68,9 @@ class _ProfilePageState extends State<ProfilePage> {
         if (userProfile != null) {
           setState(() {
             _fullNameController.text = userProfile['fullName'] ?? '';
-            _ageController.text =
-                userProfile['age'] != null ? userProfile['age'].toString() : '';
+            _ageController.text = userProfile['age'] != null
+                ? userProfile['age'].toString()
+                : '';
             _locationController.text = userProfile['location'] ?? '';
             _medicalConditionsController.text =
                 userProfile['medicalConditions'] ?? '';
@@ -81,8 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
             prefs.setString('profileImageUrl', _profileImageUrl!);
             prefs.setString('age', _ageController.text);
             prefs.setString('location', _locationController.text);
-            prefs.setString(
-                'medicalConditions', _medicalConditionsController.text);
+            prefs.setString('medicalConditions',
+                _medicalConditionsController.text);
           });
         }
       } else {
@@ -172,113 +173,216 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text('Profile'),
         backgroundColor: Colors.blue,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20.0),
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SafeArea(
-                      child: Wrap(
-                        children: [
-                          ListTile(
-                            leading: const Icon(Icons.photo_library),
-                            title: const Text('Photo Library'),
-                            onTap: () {
-                              getImage(ImageSource.gallery);
-                              Navigator.pop(context);
-                            },
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SafeArea(
+                              child: Wrap(
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.photo_library),
+                                    title: const Text('Photo Library'),
+                                    onTap: () {
+                                      getImage(ImageSource.gallery);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.photo_camera),
+                                    title: const Text('Camera'),
+                                    onTap: () {
+                                      getImage(ImageSource.camera);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.secondary,
+                            width: 2,
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.photo_camera),
-                            title: const Text('Camera'),
-                            onTap: () {
-                              getImage(ImageSource.camera);
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          backgroundImage: _image != null
+                              ? FileImage(_image!)
+                              : _profileImageUrl != null
+                                  ? NetworkImage(_profileImageUrl!)
+                                  : null as ImageProvider<Object>?,
+                        ),
                       ),
-                    );
-                  },
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.secondary,
-                    width: 2,
-                  ),
-                ),
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.white,
-                  backgroundImage: _image != null
-                      ? FileImage(_image!)
-                      : _profileImageUrl != null
-                          ? NetworkImage(_profileImageUrl!)
-                          : null as ImageProvider<Object>?,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          _fullNameController.text.isNotEmpty
+                              ? _fullNameController.text
+                              : 'Your Name',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  'Update Profile Details',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1,
+                  ),
+                ),
+                child: TextField(
+                  controller: _fullNameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Full Name',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1,
+                  ),
+                ),
+                child: TextField(
+                  controller: _ageController,
+                  decoration: const InputDecoration(
+                    hintText: 'Age',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1,
+                  ),
+                ),
+                child: TextField(
+                  controller: _locationController,
+                  decoration: const InputDecoration(
+                    hintText: 'Location',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1,
+                  ),
+                ),
+                child: TextField(
+                  controller: _medicalConditionsController,
+                  decoration: const InputDecoration(
+                    hintText: 'Your Existing Medical Conditions',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: const Color(0xFFE0E0E0),
+                    width: 1,
+                  ),
+                ),
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Update Password',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: _updateProfile,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'UPDATE PROFILE',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          Text(
-            'Update Profile Details',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.blue[900],
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _fullNameController,
-            decoration: const InputDecoration(
-              hintText: 'Full Name',
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _ageController,
-            decoration: const InputDecoration(
-              hintText: 'Age',
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _locationController,
-            decoration: const InputDecoration(
-              hintText: 'Location',
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _medicalConditionsController,
-            decoration: const InputDecoration(
-              hintText: 'Your Existing Medical Conditions',
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              hintText: 'Update Password',
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _updateProfile,
-            child: const Text('Update Profile'),
-          ),
-        ],
+        ),
       ),
     );
   }
