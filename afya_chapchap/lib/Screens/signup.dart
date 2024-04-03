@@ -94,70 +94,75 @@ class _SignUpPageState extends State<SignUpPage> {
                   "Say goodbye to geographical barriers and schedule your online appointment today!",
                   style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 50.0),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Full Name'),
+                ),
+                const SizedBox(height: 10.0),
                 TextField(
                   controller: _fullnameController,
                   decoration: const InputDecoration(
-                    labelText: 'Fullname',
-                    fillColor: Color(0xffD8D8DD),
-                    labelStyle: TextStyle(color: Colors.black),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                    hintText: 'Enter full name...',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 255, 255, 255),
+                    border: OutlineInputBorder(
+                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
                 ),
+                const SizedBox(height: 20.0),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Email'),
+                ),
+                const SizedBox(height: 10.0),
                 TextField(
                   controller: _emailController,
                   decoration: const InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.black),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
+                    hintText: 'Enter email...',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 255, 255, 255),
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: 20.0),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Password'),
+                ),
+                const SizedBox(height: 10.0),
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                    labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.black),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                    hintText: 'Enter your password',
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 255, 255, 255),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 50.0),
+                SizedBox(
+                  width: double.infinity, // Make the button width match the text field width
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(0, 76, 255, 0.921),
+                      foregroundColor: Colors.white,
+                      elevation: 5.0,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                    onPressed: _signUp,
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[800],
-                    foregroundColor: Colors.white,
-                    elevation: 5.0,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                  ),
-                  onPressed: _signUp,
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                  ),
-                ),
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 30.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -170,12 +175,12 @@ class _SignUpPageState extends State<SignUpPage> {
                               builder: (context) => const LoginPage()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         " LOG IN",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
-                          color: Colors.blue[800],
+                          color: Color.fromRGBO(0, 76, 255, 0.921),
                         ),
                       ),
                     ),
@@ -185,6 +190,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 // Google Sign In Button
                 SignInButton(
                   Buttons.Google,
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                   onPressed: () async {
                     try {
                       // Perform Google Sign-Up
