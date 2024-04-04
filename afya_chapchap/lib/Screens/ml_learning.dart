@@ -1,57 +1,67 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class MLLearningPage extends StatefulWidget {
-  const MLLearningPage({super.key});
-
-  @override
-  _MLLearningPageState createState() => _MLLearningPageState();
+void main() {
+  runApp(const Model());
 }
 
-class _MLLearningPageState extends State<MLLearningPage> {
-  int _currentStep = 0;
-  final _formKey = GlobalKey<FormState>();
-  final _featureValues = <String, dynamic>{};
-  double? _predictedPrice;
-  final _focusNodes = [
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-  ];
+// The Model class is the main app widget for the Sales Prediction app
+class Model extends StatefulWidget {
+  const Model({super.key});
+
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Sales Prediction',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+       debugShowCheckedModeBanner: false, // Hide the debug banner
+      home:
+          const PredictionScreen(), // PredictionScreen is the main screen of the app
+    );
+  }
+  
+  @override
+  // ignore: no_logic_in_create_state
+  State<StatefulWidget> createState() => throw UnimplementedError();
+}
+
+// PredictionScreen is a StatefulWidget that handles the UI and logic for predicting sales
+class PredictionScreen extends StatefulWidget {
+  const PredictionScreen({super.key});
 
   @override
-  void dispose() {
-    for (var focusNode in _focusNodes) {
-      focusNode.dispose();
-    }
-    super.dispose();
-  }
+  // ignore: library_private_types_in_public_api
+  _PredictionScreenState createState() => _PredictionScreenState();
+}
 
-  void _nextStep() {
-    if (_currentStep < 4) {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        setState(() {
-          _currentStep++;
-          _focusNodes[_currentStep].requestFocus();
-        });
-      }
-    } else {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        // Call your machine learning model to predict the price
-        // _predictedPrice = predictHousePrice(_featureValues);
-        // setState(() {});
-      }
-    }
-  }
+class _PredictionScreenState extends State<PredictionScreen> {
+  final _tvController =
+      TextEditingController(); // Controller to manage the TV marketing expenses input field
+  double? _prediction; // Variable to store the predicted sales value
 
-  void _previousStep() {
-    if (_currentStep > 0) {
+  // Method to make a POST request to the FastAPI endpoint and get the predicted sales value
+  Future<void> _predictSales() async {
+    final tv = double.tryParse(_tvController.text);
+    if (tv == null || tv <= 0 || tv >= 300) {
+      // Handle invalid TV value
+      return;
+    }
+
+    final response = await http.post(
+      Uri.parse('http://your-api-url/predict'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'tv': tv}),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
       setState(() {
-        _currentStep--;
-        _focusNodes[_currentStep].requestFocus();
+        _prediction = jsonResponse['Sales prediction'];
       });
+    } else {
+      // Handle error
     }
   }
 
@@ -59,177 +69,81 @@ class _MLLearningPageState extends State<MLLearningPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ML Learning'),
-        backgroundColor: Colors.indigo[800],
+        title: const Text('Sales Prediction'), // App bar title
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'House Price Prediction',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.indigo,
+            Card(
+              elevation: 4.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
-            ),
-            const SizedBox(height: 24.0),
-            Stepper(
-              currentStep: _currentStep,
-              controlsBuilder: (context, details) {
-                return Row(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
-                    if (_currentStep != 0)
-                      ElevatedButton(
-                        onPressed: _previousStep,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigo[800],
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: const Text('Previous'),
+                    TextField(
+                      controller: _tvController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'TV Marketing Expenses',
+                        border: OutlineInputBorder(),
                       ),
-                    const SizedBox(width: 8.0),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _nextStep,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigo[800],
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: _currentStep == 4
-                            ? const Text('Predict Price')
-                            : const Text('Next'),
-                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed:
+                          _predictSales, // Button to trigger the prediction
+                      child: const Text('Predict Sales'),
                     ),
                   ],
-                );
-              },
-              steps: [
-                Step(
-                  title: const Text('Area'),
-                  content: TextFormField(
-                    focusNode: _focusNodes[0],
-                    decoration: const InputDecoration(
-                      labelText: 'Area (sq. ft.)',
-                      prefixIcon: Icon(Icons.house),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the area';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _featureValues['area'] = double.parse(value!);
-                    },
-                  ),
-                  isActive: _currentStep == 0,
                 ),
-                Step(
-                  title: const Text('Bedrooms'),
-                  content: TextFormField(
-                    focusNode: _focusNodes[1],
-                    decoration: const InputDecoration(
-                      labelText: 'Number of Bedrooms',
-                      prefixIcon: Icon(Icons.bed),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the number of bedrooms';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _featureValues['bedrooms'] = int.parse(value!);
-                    },
-                  ),
-                  isActive: _currentStep == 1,
-                ),
-                Step(
-                  title: const Text('Bathrooms'),
-                  content: TextFormField(
-                    focusNode: _focusNodes[2],
-                    decoration: const InputDecoration(
-                      labelText: 'Number of Bathrooms',
-                      prefixIcon: Icon(Icons.bathtub),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the number of bathrooms';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _featureValues['bathrooms'] = int.parse(value!);
-                    },
-                  ),
-                  isActive: _currentStep == 2,
-                ),
-                Step(
-                  title: const Text('House Type'),
-                  content: DropdownButtonFormField<String>(
-                    focusNode: _focusNodes[3],
-                    decoration: const InputDecoration(
-                      labelText: 'House Type',
-                      prefixIcon: Icon(Icons.home),
-                    ),
-                    items: ['Apartment', 'House', 'Townhouse']
-                        .map((type) => DropdownMenuItem(
-                              value: type,
-                              child: Text(type),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        _featureValues['houseType'] = value;
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select a house type';
-                      }
-                      return null;
-                    },
-                  ),
-                  isActive: _currentStep == 3,
-                ),
-                Step(
-                  title: const Text('Result'),
-                  content: _predictedPrice != null
-                      ? Card(
-                          elevation: 4.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              'Predicted Price: \$${_predictedPrice!.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
-                              ),
-                            ),
-                          ),
-                        )
-                      : const Text(
-                          'Please enter the required information to predict the house price.'),
-                  isActive: _currentStep == 4,
-                ),
-              ],
+              ),
             ),
+            const SizedBox(height: 32.0),
+            if (_prediction != null)
+              Card(
+                elevation: 4.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Predicted Sales:', // Label for the predicted sales value
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        '\$${_prediction!.toStringAsFixed(2)}', // Display the predicted sales value
+                        style: const TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _tvController
+        .dispose(); // Dispose the TextEditingController when the widget is removed from the widget tree
+    super.dispose();
   }
 }

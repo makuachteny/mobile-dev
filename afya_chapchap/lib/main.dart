@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Merriweather',
+      ),
       initialRoute: '/signup', // Set the initial route to '/signup'.
       debugShowCheckedModeBanner: false,
       routes: {

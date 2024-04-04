@@ -80,3 +80,13 @@ flutter:
   assets:
     - assets/imgs/doctor_animation.png
     - assets/imgs/profile_pic.png
+
+fonts:
+    - family: Merriweather
+      fonts:
+        - asset: assets/fonts/Merriweather-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Merriweather-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Merriweather-Black.ttf
+          weight: 900
