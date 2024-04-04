@@ -142,7 +142,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 50.0),
+                const SizedBox(height: 30.0),
                 SizedBox(
                   width: double.infinity, // Make the button width match the text field width
                   child: ElevatedButton(
