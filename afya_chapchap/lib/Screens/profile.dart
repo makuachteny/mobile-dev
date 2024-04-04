@@ -175,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20), // Added padding
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20), 
           color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         child: CircleAvatar(
-                          radius: 30,
+                          radius: 40,
                           backgroundColor: Colors.white,
                           backgroundImage: _image != null
                               ? FileImage(_image!)
@@ -235,7 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 15),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -253,119 +253,54 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10), // Added padding
+              const SizedBox(height: 50),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10), 
                 child: Text(
                   'Update Profile Details',
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.blue[900],
+                    color: Color(0xFF424242),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(8), // Reduced padding
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: const Color(0xFFE0E0E0),
-                    width: 1,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTextFieldWithLabel(
+                    label: 'Full Name',
+                    controller: _fullNameController,
+                    placeholder: 'Full Name',
                   ),
-                ),
-                child: TextField(
-                  controller: _fullNameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Full Name',
-                    border: InputBorder.none,
+                  _buildTextFieldWithLabel(
+                    label: 'Age',
+                    controller: _ageController,
+                    placeholder: 'Age',
                   ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(8), // Reduced padding
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: const Color(0xFFE0E0E0),
-                    width: 1,
+                  _buildTextFieldWithLabel(
+                    label: 'Location',
+                    controller: _locationController,
+                    placeholder: 'Location',
                   ),
-                ),
-                child: TextField(
-                  controller: _ageController,
-                  decoration: const InputDecoration(
-                    hintText: 'Age',
-                    border: InputBorder.none,
+                  _buildTextFieldWithLabel(
+                    label: 'Existing Medical Conditions',
+                    controller: _medicalConditionsController,
+                    placeholder: 'Your Existing Medical Conditions',
                   ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(8), // Reduced padding
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: const Color(0xFFE0E0E0),
-                    width: 1,
+                  _buildTextFieldWithLabel(
+                    label: 'Password',
+                    controller: _passwordController,
+                    placeholder: 'Update Password',
                   ),
-                ),
-                child: TextField(
-                  controller: _locationController,
-                  decoration: const InputDecoration(
-                    hintText: 'Location',
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(8), // Reduced padding
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: const Color(0xFFE0E0E0),
-                    width: 1,
-                  ),
-                ),
-                child: TextField(
-                  controller: _medicalConditionsController,
-                  decoration: const InputDecoration(
-                    hintText: 'Your Existing Medical Conditions',
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(8), // Reduced padding
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: const Color(0xFFE0E0E0),
-                    width: 1,
-                  ),
-                ),
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Update Password',
-                    border: InputBorder.none,
-                  ),
-                ),
+                ],
               ),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: _updateProfile,
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(vertical: 16), 
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(10),
@@ -382,10 +317,51 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20), 
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextFieldWithLabel({
+    required String label,
+    required TextEditingController controller,
+    required String placeholder,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Color(0xFF424242),
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Container(
+          padding: const EdgeInsets.all(8), 
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color(0xFFE0E0E0),
+              width: 1,
+            ),
+          ),
+          child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: placeholder,
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+      ],
     );
   }
 }
