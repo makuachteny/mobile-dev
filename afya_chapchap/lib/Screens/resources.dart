@@ -6,9 +6,11 @@ class AfyaChapChapResourcePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF424242),
       body: SafeArea(
-        child: Stack(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Stack(
           children: [
             SingleChildScrollView(
               child: Column(
@@ -116,7 +118,7 @@ class AfyaChapChapResourcePage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildResourceSection({required String title, required String content}) {
