@@ -48,7 +48,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: ProfilePage(
-          onUpdateProfile: (profileImageUrl, fullName) {}, updateProfile: (String profileImageUrl, String fullName) {  },
+          onUpdateProfile: (profileImageUrl, fullName) {}, updateProfile: (String profileImageUrl, String fullName) {  }, 
         ),
       ),
     );
@@ -56,11 +56,11 @@ void main() {
     expect(find.byType(AppBar), findsOneWidget);
     expect(find.text('Profile'), findsOneWidget);
     expect(find.text('Your Name'), findsOneWidget);
-    expect(find.text('Full Name'), findsOneWidget);
-    expect(find.text('Age'), findsOneWidget);
-    expect(find.text('Location'), findsOneWidget);
-    expect(find.text('Your Existing Medical Conditions'), findsOneWidget);
-    expect(find.text('Update Password'), findsOneWidget);
+    expect(find.byKey(const Key('Full Name label')), findsOneWidget);
+    expect(find.byKey(const Key('Age label')), findsOneWidget);
+    expect(find.byKey(const Key('Location label')), findsOneWidget);
+    expect(find.byKey(const Key('Existing Medical Conditions label')), findsOneWidget);
+    expect(find.byKey(const Key('Password label')), findsOneWidget);
     expect(find.text('UPDATE PROFILE'), findsOneWidget);
   });
 
@@ -71,7 +71,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: ProfilePage(
-          onUpdateProfile: (profileImageUrl, fullName) {}, updateProfile: (String profileImageUrl, String fullName) {  },
+          onUpdateProfile: (profileImageUrl, fullName) {}, updateProfile: (String profileImageUrl, String fullName) {  }, 
         ),
       ),
     );
@@ -85,9 +85,9 @@ void main() {
 
     expect(updateButton, findsOneWidget); // Button should be initially present
 
-    await tester.enterText(fullNameField, 'John Doe');
-    await tester.enterText(ageField, '30');
-    await tester.enterText(locationField, 'New York');
+    await tester.enterText(fullNameField, 'Mary Akinyi');
+    await tester.enterText(ageField, '35');
+    await tester.enterText(locationField, 'Nairobi');
     await tester.enterText(medicalConditionsField, 'None');
     await tester.enterText(passwordField, 'password');
 

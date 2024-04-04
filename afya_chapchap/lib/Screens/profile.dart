@@ -175,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20), 
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 50),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10), 
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   'Update Profile Details',
                   style: TextStyle(
@@ -300,7 +300,7 @@ class _ProfilePageState extends State<ProfilePage> {
               GestureDetector(
                 onTap: _updateProfile,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16), 
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(10),
@@ -317,7 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20), 
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -335,6 +335,7 @@ class _ProfilePageState extends State<ProfilePage> {
       children: [
         Text(
           label,
+          key: Key('$label label'), // Add key here
           style: const TextStyle(
             fontSize: 16,
             color: Color(0xFF424242),
@@ -343,7 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         const SizedBox(height: 5),
         Container(
-          padding: const EdgeInsets.all(8), 
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
